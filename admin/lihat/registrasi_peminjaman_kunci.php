@@ -30,12 +30,16 @@
                 <input type="text" name="email_peminjam" class="form-control" id="email_peminjam" placeholder="Masukan Email Peminjam">
               </div>
               <div class="form-group">
-                <label>Jenis ID</label>
+                <label>Jenis ID Peminjam</label>
                 <select name="jenis_id" class="form-control">
                   <option value="">Pilih Jenis ID</option>
                   <option value="ktp">KTP</option>
                   <option value="sim">SIM</option>
                 </select>
+              </div>
+              <div class="form-group">
+                <label for="no_id">Nomor ID Peminjam</label>
+                <input type="text" name="no_id" class="form-control" id="no_id" placeholder="Masukan Email Peminjam">
               </div>
               <div class="form-group">
                 <label>Perusahaan</label>
