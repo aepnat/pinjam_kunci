@@ -75,7 +75,7 @@ $statistik = json_encode($statistik);
       <div class="icon">
         <i class="ion ion-stats-bars"></i>
       </div>
-      <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
@@ -90,7 +90,7 @@ $statistik = json_encode($statistik);
       <div class="icon">
         <i class="ion ion-pie-graph"></i>
       </div>
-      <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
@@ -105,7 +105,7 @@ $statistik = json_encode($statistik);
       <div class="icon">
         <i class="ion ion-stats-bars"></i>
       </div>
-      <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
@@ -120,7 +120,7 @@ $statistik = json_encode($statistik);
       <div class="icon">
         <i class="ion ion-pie-graph"></i>
       </div>
-      <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
