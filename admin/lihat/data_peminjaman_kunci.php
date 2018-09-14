@@ -62,7 +62,7 @@ $data_bulan = $connectdb->query($sql);
 ?>
 
 <div class="row">
- <div class="col-xs-3">
+ <div class="col-md-3">
     <div class="box box-solid">
         <div class="box-header with-border">
             <h3 class="box-title">Status</h3>
@@ -134,7 +134,7 @@ $data_bulan = $connectdb->query($sql);
     </div>
 
  </div>
-  <div class="col-xs-9">
+  <div class="col-md-9">
     <div class="box">
       <div class="box-header">
         <h3 class="box-title">Data</h3>
