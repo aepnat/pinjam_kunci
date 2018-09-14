@@ -1,0 +1,27 @@
+.main-header .logo,
+.main-sidebar{
+    width: 260px;
+}
+
+.main-header .navbar,
+.content-wrapper,
+.main-footer{
+    margin-left: 260px;
+}
+
+@media (max-width: 767px) {
+    .main-header .logo
+    {
+        width: 100%;
+    }
+
+    .main-sidebar{
+        width: 230px;
+    }
+
+    .main-header .navbar,
+    .content-wrapper,
+    .main-footer{
+        margin-left: 0;
+    }
+}

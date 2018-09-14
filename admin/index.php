@@ -36,6 +36,7 @@ if (!isset($_SESSION['pengguna_id'])) {
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../css/skin-blue.min.css">
+  <link rel="stylesheet" href="../css/style.css">
   <!-- Morris chart -->
   <link rel="stylesheet" href="../css/morris.css">
 
