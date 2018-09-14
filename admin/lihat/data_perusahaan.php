@@ -49,8 +49,8 @@ $hasil = $connectdb->query($sql);
                 <td><?php echo $data['no_telp'];?></td>
                 <td><?php echo $data['alamat'];?></td>
                 <td>
-                    <button class="btn btn-xs btn-primary">Detail</button>
-                    <button class="btn btn-xs btn-success">Edit</button>
+                    <a class="btn btn-xs btn-primary" href="">Detail</a>
+                    <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_perusahaan&metode=edit&id=<?php echo $data['perusahaan_id'];?>">Edit</a>
                 </td>
               </tr>
           <?php endwhile; else:?>

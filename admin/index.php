@@ -11,8 +11,6 @@ if (!isset($_SESSION['pengguna_id'])) {
     header('Location:' . $config['base_url']);
 }
 
-$data_situs = ambil_data_situs();
-extract($data_situs);
 ?>
 <!DOCTYPE html>
 <html>

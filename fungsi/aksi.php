@@ -1,9 +1,9 @@
 <?php
-$metode = (isset($_GET['metode'])) ? $_GET['metode'] : '';
-$metode = (isset($_POST['metode']) && $metode == '') ? $_POST['metode'] : $metode;
+global $metode;
+global $lihat;
 
 // input perusahaan
-if ($metode == 'input_perusahaan') {
+if ($metode == 'input_perusahaan' || ($lihat == 'data_perusahaan' && $metode == 'edit' && isset($_POST['metode2']))) {
     // Validasi
     $fields = array(
         'nama' => array(
@@ -32,11 +32,20 @@ if ($metode == 'input_perusahaan') {
         }
     }
 
+    $is_edit = isset($_POST['metode2']) && $_POST['metode2'] == 'edit';
+
     // periksa duplikasi
     if(empty($error_text)) {
         // cari nama yang sama
         $nama = $_POST['nama'];
         $sql = "SELECT * FROM perusahaan WHERE nama = '$nama'";
+
+        // metode edit
+        if ($is_edit) {
+            $perusaahan_id = $_POST['id'];
+            $sql .= " AND NOT perusahaan_id = '$perusaahan_id'";
+        }
+
         $hasil = $connectdb->query($sql);
         if ($hasil->num_rows > 0) {
             $error_text[] = 'Data perusaahan dengan nama ini sudah ada!';
@@ -44,19 +53,24 @@ if ($metode == 'input_perusahaan') {
     }
 
     // jika tidak ada error
-    if(empty($error_text)) {
+    if (empty($error_text)) {
         $nama = $_POST['nama'];
         $no_telp = $_POST['no_telp'];
         $alamat = $_POST['alamat'];
         $tgl_dibuat = date("Y-m-d H:i:s");
         $dibuat_oleh = $_SESSION['pengguna_id'];
 
-        $sql = "INSERT INTO perusahaan (nama, no_telp, alamat, tgl_dibuat, dibuat_oleh) VALUES ('$nama', '$no_telp', '$alamat', '$tgl_dibuat', '$dibuat_oleh')";
+        if ($is_edit) {
+            $perusahaan_id = $_POST['id'];
+            $sql = "UPDATE perusahaan SET nama='$nama', no_telp='$no_telp', alamat='$alamat' WHERE perusahaan_id='$perusahaan_id'";
+            $sukses_text[] = 'Berhasil menyimpan data perusahaan';
+        } else {
+            $sql = "INSERT INTO perusahaan (nama, no_telp, alamat, tgl_dibuat, dibuat_oleh) VALUES ('$nama', '$no_telp', '$alamat', '$tgl_dibuat', '$dibuat_oleh')";
+            $sukses_text[] = 'Berhasil menambah data perusahaan';
+        }
 
         if ($connectdb->query($sql) === TRUE) {
-            $_SESSION['success_text'] = array(
-                'Berhasil menambah data perusahaan'
-            );
+            $_SESSION['success_text'] = $sukses_text;
             header('Location:' . $config['base_url'] . '/admin?lihat=data_perusahaan');
             exit();
         } else {
