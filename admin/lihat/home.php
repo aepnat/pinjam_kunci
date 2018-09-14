@@ -133,7 +133,7 @@ $statistik = json_encode($statistik);
           <div class="box-header">
             <i class="fa fa-th"></i>
 
-            <h3 class="box-title">Statistik Peminjaman Kunci Tahun 2018</h3>
+            <h3 class="box-title">Statistik Peminjaman Kunci Tahun <?php echo date('Y');?></h3>
           </div>
           <div class="box-body border-radius-none">
             <div class="chart" id="line-chart" style="height: 400px;"></div>
