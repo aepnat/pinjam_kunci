@@ -8,6 +8,8 @@ function ambil_data_situs()
     $halaman_deskripsi = 'Selamat Datang';
 
     $lihat = (isset($_GET['lihat'])) ? $_GET['lihat'] : '';
+    $lihat = (isset($_POST['lihat']) && $lihat == '') ? $_POST['lihat'] : $lihat;
+
     $metode = (isset($_GET['metode'])) ? $_GET['metode'] : '';
     $id = (isset($_GET['id'])) ? $_GET['id'] : '';
 
