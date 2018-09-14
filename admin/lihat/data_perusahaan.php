@@ -1,3 +1,19 @@
+<?php
+
+include '../config/config.php';
+include '../config/database.php';
+include '../fungsi/fungsi_tanggal.php';
+
+// Total Peminjam Kunci
+$sql = 'SELECT * FROM perusahaan';
+
+if (isset($_POST['metode']) && $_POST['metode'] == 'cari') {
+    $q = $_POST['q'];
+    $sql .= " WHERE nama LIKE '%$q%'";
+}
+
+$hasil = $connectdb->query($sql);
+?>
 <div class="row">
   <div class="col-xs-12">
     <div class="box">
@@ -5,13 +21,17 @@
         <h3 class="box-title">Data</h3>
 
         <div class="box-tools">
-          <div class="input-group input-group-sm" style="width: 150px;">
-            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+            <form action="" method="post">
+            <div class="input-group input-group-sm" style="width: 150px;">
+            <input type="text" name="q" class="form-control pull-right" value="<?php echo isset($_POST['q']) ? $_POST['q'] : '';?>" placeholder="Cari">
 
             <div class="input-group-btn">
-              <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+              <input type="hidden" name="lihat" value="data_perusahaan" />
+              <input type="hidden" name="metode" value="cari" />
+              <input type="submit" class="btn btn-default"><i class="fa fa-search"></i></input>
             </div>
           </div>
+          </form>
         </div>
       </div>
       <!-- /.box-header -->
@@ -23,15 +43,21 @@
             <th>Alamat</th>
             <th>Aksi</th>
           </tr>
-          <tr>
-            <td>PT. Huawei Indonesia</td>
-            <td>0219343110</td>
-            <td>Jalan Manggarai No. 107 Manggarai Jakarta Timur</td>
-            <td>
-                <button class="btn btn-xs btn-primary">Detail</button>
-                <button class="btn btn-xs btn-success">Edit</button>
-            </td>
-          </tr>
+          <?php if ($hasil->num_rows > 0): while($data = $hasil->fetch_assoc()):?>
+              <tr>
+                <td><?php echo $data['nama'];?></td>
+                <td><?php echo $data['no_telp'];?></td>
+                <td><?php echo $data['alamat'];?></td>
+                <td>
+                    <button class="btn btn-xs btn-primary">Detail</button>
+                    <button class="btn btn-xs btn-success">Edit</button>
+                </td>
+              </tr>
+          <?php endwhile; else:?>
+              <tr>
+                  <td colspan="4">Data tidak ditemukan</td>
+              </tr>
+          <?php endif;?>
         </table>
       </div>
       <!-- /.box-body -->
