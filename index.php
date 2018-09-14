@@ -9,6 +9,8 @@ if (isset($_SESSION['pengguna_id'])) {
     header('Location:' . $config['base_url'] . '/admin');
 }
 
+$error_text = array();
+
 // periksa kalo ada request untuk login
 if (isset($_POST['method']) && $_POST['method'] == 'login') {
     // periksa kalo email dan password tidak kosong
@@ -29,11 +31,16 @@ if (isset($_POST['method']) && $_POST['method'] == 'login') {
             // redirect ke admin
             header('Location:' . $config['base_url'] . '/admin');
         } else {
-            $error_text = 'Email atau Password salah.';
+            $error_text[] = 'Email atau Password salah.';
         }
     } else {
-        $error_text = 'Email dan Password tidak boleh kosong';
+        $error_text[] = 'Email dan Password tidak boleh kosong';
     }
+}
+
+if (isset($_SESSION['error_text'])) {
+    $error_text = array_merge($error_text, $_SESSION['error_text']);
+    unset($_SESSION['error_text']);
 }
 
 ?>
@@ -71,11 +78,11 @@ if (isset($_POST['method']) && $_POST['method'] == 'login') {
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-      <?php if (isset($error_text)):?>
+      <?php if (!empty($error_text)):?>
           <div class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
               <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-              <?php echo $error_text;?>
+              <?php echo implode('<br>', $error_text);?>
           </div>
       <?php endif;?>
     <form action="" method="post">

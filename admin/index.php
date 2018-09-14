@@ -9,7 +9,11 @@ require_once('../fungsi/aksi.php');
 
 // Periksa kalo udah login
 if (!isset($_SESSION['pengguna_id'])) {
+    $_SESSION['error_text'] = array(
+        'Silahkan login untuk melihat halaman admin!'
+    );
     header('Location:' . $config['base_url']);
+    die();
 }
 
 ?>
