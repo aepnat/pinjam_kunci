@@ -286,3 +286,28 @@ if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_materi
         $_SESSION['error_text'] = $error_text;
     }
 }
+
+if ($lihat == 'data_peminjaman_kunci' && $metode == 'selesai') {
+    global $id;
+
+    // check exists
+    $sql = "SELECT * FROM pinjam_kunci WHERE id='$id'";
+    $hasil = $connectdb->query($sql);
+    if ($hasil->num_rows > 0) {
+        // update
+        $wkt_selesai = date("Y-m-d H:i:s");
+        $sql = "UPDATE pinjam_kunci SET wkt_selesai='$wkt_selesai' WHERE id='$id'";
+
+        if ($connectdb->query($sql) === TRUE) {
+            $_SESSION['success_text'] = array('Data peminjaman kunci sudah diselesaikan');
+        } else {
+            error_log('Error selesai data peminjaman kunci. ' . $connectdb->error);
+            $_SESSION['error_text'] = array('Data tidak bisa diselesaikan. Kegagalan sistem. Silahkan Coba lagi!');
+        }
+    } else {
+        $_SESSION['error_text'] = array('Data Peminjaman Kunci tidak ditemukan.');
+    }
+
+    header('Location: ' . $config['base_url'] . '/admin?lihat=data_peminjaman_kunci');
+    die();
+}

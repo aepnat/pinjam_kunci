@@ -33,16 +33,21 @@ $hasil = $connectdb->query($sql);
               <th>Status</th>
               <th>Aksi</th>
             </tr>
-          <?php if ($hasil->num_rows > 0): while($data = $hasil->fetch_assoc()):?>
+          <?php if ($hasil->num_rows > 0): while($data = $hasil->fetch_assoc()):
+              $is_selesai = ($data['wkt_selesai'] != null || $data['wkt_selesai'] != '') ? TRUE : FALSE;
+              ?>
               <tr>
                 <td><?php echo $data['kode_kunci'];?></td>
                 <td><?php echo $data['tujuan'];?></td>
                 <td><?php echo $data['nm_peminjam'];?></td>
                 <td><?php echo $data['nm_perusahaan'];?></td>
                 <td><?php echo waktu_indo($data['wkt_peminjaman']);?></td>
-                <td><?php echo ($data['wkt_selesai'] == null) ? '-' : waktu_indo($data['wkt_selesai']);?></td>
-                <td><?php echo ($data['wkt_selesai'] == null) ? '<span class="label label-warning">Belum</span>' : '<span class="label label-success">Selesai</span>';?></td>
+                <td><?php echo (! $is_selesai) ? '-' : waktu_indo($data['wkt_selesai']);?></td>
+                <td><?php echo (! $is_selesai) ? '<span class="label label-warning">Belum</span>' : '<span class="label label-success">Selesai</span>';?></td>
                 <td>
+                    <?php if (! $is_selesai):?>
+                        <a class="btn btn-xs btn-warning" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=selesai&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menyelesaikan data ini?');">Selesai</a>
+                    <?php endif;?>
                     <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=detail&id=<?php echo $data['id'];?>">Detail</a>
                     <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=edit&id=<?php echo $data['id'];?>">Ubah</a>
                 </td>

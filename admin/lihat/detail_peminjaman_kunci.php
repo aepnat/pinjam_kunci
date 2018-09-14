@@ -4,6 +4,7 @@ global $id;
 $sql = "SELECT pinjam_kunci.*, perusahaan.nama as nm_perusahaan, perusahaan.no_telp as no_telp_perusahaan FROM pinjam_kunci JOIN perusahaan ON perusahaan.perusahaan_id=pinjam_kunci.perusahaan_id WHERE id = $id";
 $hasil = $connectdb->query($sql);
 $data = $hasil->fetch_assoc();
+$is_selesai = ($data['wkt_selesai'] != null || $data['wkt_selesai'] != '') ? TRUE : FALSE;
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -14,6 +15,10 @@ $data = $hasil->fetch_assoc();
           </div>
           <!-- /.box-header -->
             <div class="box-body">
+              <div class="form-group">
+                <label>Status</label>
+                <p><?php echo (! $is_selesai) ? '<span class="label label-warning">Belum</span>' : '<span class="label label-success">Selesai</span>';?></p>
+              </div>
               <div class="form-group">
                 <label>Perusahaan</label>
                 <p><?php echo $data['nm_perusahaan'] . ' ( ' . $data['no_telp_perusahaan'] . ' ) ';?></p>
