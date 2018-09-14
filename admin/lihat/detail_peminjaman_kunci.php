@@ -1,4 +1,10 @@
-<?php include "../config/config.php";?>
+<?php
+global $id;
+
+$sql = "SELECT pinjam_kunci.*, perusahaan.nama as nm_perusahaan, perusahaan.no_telp as no_telp_perusahaan FROM pinjam_kunci JOIN perusahaan ON perusahaan.perusahaan_id=pinjam_kunci.perusahaan_id WHERE id = $id";
+$hasil = $connectdb->query($sql);
+$data = $hasil->fetch_assoc();
+?>
 <div class="row">
     <div class="col-md-12">
         <!-- general form elements -->
@@ -9,36 +15,36 @@
           <!-- /.box-header -->
             <div class="box-body">
               <div class="form-group">
+                <label>Perusahaan</label>
+                <p><?php echo $data['nm_perusahaan'] . ' ( ' . $data['no_telp_perusahaan'] . ' ) ';?></p>
+              </div>
+              <div class="form-group">
                 <label for="id_kunci">ID Kunci</label>
-                <p>003</p>
+                <p><?php echo $data['kode_kunci'];?></p>
               </div>
               <div class="form-group">
                 <label for="tujuan">Tujuan</label>
-                <p>Jakarta Barat</p>
+                <p><?php echo $data['tujuan'];?></p>
               </div>
               <div class="form-group">
                 <label for="nm_peminjam">Nama Peminjam</label>
-                <p>Adi Hermawan</p>
+                <p><?php echo $data['nm_peminjam'];?></p>
               </div>
               <div class="form-group">
                 <label for="no_telp_peminjam">No. Telp Peminjam</label>
-                <p>021943110</p>
+                <p><?php echo $data['no_telp_peminjam'];?></p>
               </div>
               <div class="form-group">
                 <label for="email_peminjam">Email Peminjam</label>
-                <p>adi.hermawan@gmail.com</p>
+                <p><?php echo $data['email_peminjam'];?></p>
               </div>
               <div class="form-group">
                 <label>Jenis ID Peminjam</label>
-                <p>KTP</p>
+                <p><?php echo strtoupper($data['jenis_id']);?></p>
               </div>
               <div class="form-group">
                 <label for="no_id">Nomor ID Peminjam</label>
-                <p>12398728937487234</p>
-              </div>
-              <div class="form-group">
-                <label>Perusahaan</label>
-                <p>PT. Huawei Indonesia</p>
+                <p><?php echo $data['no_id'];?></p>
               </div>
             </div>
             <!-- /.box-body -->

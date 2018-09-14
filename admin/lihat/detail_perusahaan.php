@@ -1,5 +1,5 @@
 <?php
-global $metode;
+global $id;
 
 $sql = "SELECT * FROM perusahaan WHERE perusahaan_id = $id";
 $hasil = $connectdb->query($sql);
