@@ -1,11 +1,24 @@
 <?php
+function waktu_indo($datetime)
+{
+    $dt = new DateTime($datetime);
+    $tgl = tgl_indo($datetime);
+    $waktu = $dt->format('H:i:s');
+    return $tgl . ' ' . $waktu;
+}
+
 function tgl_indo($tgl)
 {
-    $tanggal = substr($tgl,8,2);
-    $bulan = getBulan(substr($tgl,5,2));
-    $tahun = substr($tgl,0,4);
+    $dt = new DateTime($tgl);
+    $tgl = $dt->format('Y-m-d');
+    $ubah = gmdate($tgl, time()+60*60*8);
+    $pecah = explode("-",$ubah);
+    $tanggal = $pecah[2];
+    $bulan = bulan($pecah[1]);
+    $tahun = $pecah[0];
     return $tanggal.' '.$bulan.' '.$tahun;
 }
+
 
 function bulan($bln)
 {

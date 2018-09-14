@@ -1,8 +1,6 @@
 <?php
 
-// Total Peminjam Kunci
 $sql = 'SELECT pinjam_kunci.*, perusahaan.nama as nm_perusahaan FROM pinjam_kunci JOIN perusahaan ON perusahaan.perusahaan_id=pinjam_kunci.perusahaan_id';
-
 $hasil = $connectdb->query($sql);
 ?>
 
@@ -41,8 +39,8 @@ $hasil = $connectdb->query($sql);
                 <td><?php echo $data['tujuan'];?></td>
                 <td><?php echo $data['nm_peminjam'];?></td>
                 <td><?php echo $data['nm_perusahaan'];?></td>
-                <td><?php echo $data['wkt_peminjaman'];?></td>
-                <td><?php echo ($data['wkt_selesai'] == null) ? '-' : '';?></td>
+                <td><?php echo waktu_indo($data['wkt_peminjaman']);?></td>
+                <td><?php echo ($data['wkt_selesai'] == null) ? '-' : waktu_indo($data['wkt_selesai']);?></td>
                 <td><?php echo ($data['wkt_selesai'] == null) ? '<span class="label label-warning">Belum</span>' : '<span class="label label-success">Selesai</span>';?></td>
                 <td>
                     <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=detail&id=<?php echo $data['id'];?>">Detail</a>
