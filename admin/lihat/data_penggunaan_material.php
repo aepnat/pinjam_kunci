@@ -1,7 +1,17 @@
 <?php
+require_once('../fungsi/paginator.class.php');
 
-$sql = 'SELECT pengguna_material.*, perusahaan.nama as nm_perusahaan FROM pengguna_material JOIN perusahaan ON perusahaan.perusahaan_id=pengguna_material.perusahaan_id';
-$hasil = $connectdb->query($sql);
+$query = 'SELECT pengguna_material.*, perusahaan.nama as nm_perusahaan FROM pengguna_material JOIN perusahaan ON perusahaan.perusahaan_id=pengguna_material.perusahaan_id';
+
+$limit      = ( isset( $_GET['limit'] ) ) ? $_GET['limit'] : 20;
+$page       = ( isset( $_GET['page'] ) ) ? $_GET['page'] : 1;
+$links      = ( isset( $_GET['links'] ) ) ? $_GET['links'] : 7;
+
+$base_url = $config['base_url'] . '/admin?lihat=' . $_GET['lihat'];
+
+$Paginator  = new Paginator( $connectdb, $query, $base_url );
+
+$results    = $Paginator->getData( $limit, $page );
 ?>
 <div class="row">
   <div class="col-xs-12">
@@ -30,7 +40,7 @@ $hasil = $connectdb->query($sql);
             <th>Waktu Ambil</th>
             <th>Aksi</th>
           </tr>
-          <?php if ($hasil->num_rows > 0): while($data = $hasil->fetch_assoc()):?>
+          <?php if (!empty($results->data)): foreach($results->data as $data):?>
               <tr>
                 <td><?php echo $data['nm_material'];?></td>
                 <td><?php echo $data['kode_material'];?></td>
@@ -43,7 +53,7 @@ $hasil = $connectdb->query($sql);
                     <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material&metode=hapus&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menghapus data ini?');">Hapus</a>
                 </td>
               </tr>
-          <?php endwhile;else:?>
+          <?php endforeach;else:?>
               <tr>
                   <td colspan="6">Data tidak ditemukan</td>
               </tr>
@@ -52,13 +62,7 @@ $hasil = $connectdb->query($sql);
       </div>
       <!-- /.box-body -->
       <div class="box-footer clearfix">
-        <ul class="pagination pagination-sm no-margin pull-right">
-          <li><a href="#">&laquo;</a></li>
-          <li><a href="#">1</a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">&raquo;</a></li>
-        </ul>
+          <?php echo $Paginator->createLinks( $links, 'pagination pagination-sm no-margin pull-right' ); ?>
       </div>
     </div>
     <!-- /.box -->
