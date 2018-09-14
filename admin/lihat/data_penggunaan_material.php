@@ -40,6 +40,7 @@ $hasil = $connectdb->query($sql);
                 <td>
                     <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material&metode=detail&id=<?php echo $data['id'];?>">Detail</a>
                     <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material&metode=edit&id=<?php echo $data['id'];?>">Ubah</a>
+                    <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material&metode=hapus&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menghapus data ini?');">Hapus</a>
                 </td>
               </tr>
           <?php endwhile;else:?>

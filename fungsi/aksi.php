@@ -357,11 +357,74 @@ if ($lihat == 'data_perusahaan' && $metode == 'hapus') {
     }
 
     // delete
-    $sql = "DELETE perusahaan WHERE perusahaan_id='$id'";
+    $sql = "DELETE FROM perusahaan WHERE perusahaan_id='$id'";
     if ($connectdb->query($sql) === TRUE) {
         $_SESSION['success_text'] = array('Data perusahaan berhasil dihapus.');
     } else {
-        error_log('Error selesai data peminjaman kunci. ' . $connectdb->error);
+        error_log('Error hapus data perusahaan. ' . $connectdb->error);
+        $_SESSION['error_text'] = array('Data tidak bisa dihapus. Kegagalan sistem. Silahkan Coba lagi!');
+    }
+
+    header($location_header);
+    die();
+}
+
+
+/**
+ * Hapus Data Peminjaman Kunci
+ * ============================================================================
+ */
+if ($lihat == 'data_peminjaman_kunci' && $metode == 'hapus') {
+    global $id;
+
+    $location_header = 'Location: ' . $config['base_url'] . '/admin?lihat=data_peminjaman_kunci';
+
+    // check exists
+    $sql = "SELECT * FROM pinjam_kunci WHERE id='$id'";
+    $hasil = $connectdb->query($sql);
+    if ($hasil->num_rows < 1) {
+        $_SESSION['error_text'] = array('Data peminjaman kunci tidak ditemukan.');
+        header($location_header);
+        die();
+    }
+
+    // delete
+    $sql = "DELETE FROM pinjam_kunci WHERE id='$id'";
+    if ($connectdb->query($sql) === TRUE) {
+        $_SESSION['success_text'] = array('Data peminjaman kunci berhasil dihapus.');
+    } else {
+        error_log('Error hapus data peminjaman kunci. ' . $connectdb->error);
+        $_SESSION['error_text'] = array('Data tidak bisa dihapus. Kegagalan sistem. Silahkan Coba lagi!');
+    }
+
+    header($location_header);
+    die();
+}
+
+/**
+ * Hapus Data Pengunaan Material
+ * ============================================================================
+ */
+if ($lihat == 'data_penggunaan_material' && $metode == 'hapus') {
+    global $id;
+
+    $location_header = 'Location: ' . $config['base_url'] . '/admin?lihat=data_peminjaman_kunci';
+
+    // check exists
+    $sql = "SELECT * FROM pengguna_material WHERE id='$id'";
+    $hasil = $connectdb->query($sql);
+    if ($hasil->num_rows < 1) {
+        $_SESSION['error_text'] = array('Data pengunaan material tidak ditemukan.');
+        header($location_header);
+        die();
+    }
+
+    // delete
+    $sql = "DELETE FROM pengguna_material WHERE id='$id'";
+    if ($connectdb->query($sql) === TRUE) {
+        $_SESSION['success_text'] = array('Data pengunaan material berhasil dihapus.');
+    } else {
+        error_log('Error hapus data pengunaan material. ' . $connectdb->error);
         $_SESSION['error_text'] = array('Data tidak bisa dihapus. Kegagalan sistem. Silahkan Coba lagi!');
     }
 
