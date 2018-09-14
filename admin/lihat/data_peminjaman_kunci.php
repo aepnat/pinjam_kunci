@@ -1,3 +1,4 @@
+<?php include '../config/config.php';?>
 <div class="row">
   <div class="col-xs-12">
     <div class="box">
@@ -36,8 +37,8 @@
             <td>02 April 2018 16:00:00</td>
             <td><span class="label label-success">Selesai</span></td>
             <td>
-                <button class="btn btn-xs btn-primary">Detail</button>
-                <button class="btn btn-xs btn-success">Edit</button>
+                <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=detail&id=1">Detail</a>
+                <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=edit&id=1">Ubah</a>
             </td>
           </tr>
           <tr>
@@ -51,7 +52,7 @@
             <td>
                 <button class="btn btn-xs btn-warning">Selesai</button>
                 <button class="btn btn-xs btn-primary">Detail</button>
-                <button class="btn btn-xs btn-success">Edit</button>
+                <button class="btn btn-xs btn-success">Ubah</button>
             </td>
           </tr>
         </table>

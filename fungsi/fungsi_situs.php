@@ -8,6 +8,8 @@ function ambil_data_situs()
     $halaman_deskripsi = 'Selamat Datang';
 
     $lihat = (isset($_GET['lihat'])) ? $_GET['lihat'] : '';
+    $metode = (isset($_GET['metode'])) ? $_GET['metode'] : '';
+    $id = (isset($_GET['id'])) ? $_GET['id'] : '';
 
     if ($lihat == 'data_peminjaman_kunci') {
 
@@ -15,6 +17,18 @@ function ambil_data_situs()
         $halaman_judul = 'Data Peminjaman Kunci';
         $menu_aktif = 'data_peminjaman_kunci';
         $halaman_deskripsi = 'Mengelola data peminjaman kunci';
+
+        if ($metode == 'detail' && $id != '') {
+            $file_konten = 'detail_peminjaman_kunci.php';
+            $halaman_judul = 'Detail Peminjaman Kunci';
+            $halaman_deskripsi = 'Melihat detail data peminjaman kunci';
+        }
+
+        if ($metode == 'edit' && $id != '') {
+            $file_konten = 'registrasi_peminjaman_kunci.php';
+            $halaman_judul = 'Ubah Peminjaman Kunci';
+            $halaman_deskripsi = 'Mengubah data peminjaman kunci';
+        }
 
     } elseif ($lihat == 'data_penggunaan_material') {
 
