@@ -1,7 +1,5 @@
 <?php
 
-include '../fungsi/fungsi_tanggal.php';
-
 $month = date('m');
 $year = date('Y');
 
@@ -159,14 +157,14 @@ $(function () {
       xkey             : 'y',
       ykeys            : ['item1'],
       labels           : ['Peminjam Kunci'],
-      lineColors       : ['#000'],
+      lineColors       : ['#fff'],
       lineWidth        : 2,
       hideHover        : 'auto',
       gridTextColor    : '#fff',
       gridStrokeWidth  : 0.4,
       pointSize        : 4,
-      pointStrokeColors: ['#000'],
-      gridLineColor    : '#000',
+      pointStrokeColors: ['#fff'],
+      gridLineColor    : '#fff',
       gridTextFamily   : 'Open Sans',
       gridTextColor    : '#fff',
       gridTextSize     : 10
