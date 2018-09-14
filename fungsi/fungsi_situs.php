@@ -65,12 +65,6 @@ if ($lihat == 'data_peminjaman_kunci') {
     $menu_aktif = 'data_perusahaan';
     $halaman_deskripsi = 'Mengelola data perusahaan';
 
-    if ($metode == 'detail' && $id != '') {
-        $file_konten = 'detail_perusahaan.php';
-        $halaman_judul = 'Detail Perusahaan';
-        $halaman_deskripsi = 'Melihat detail data perusahaan';
-    }
-
     if ($metode == 'edit' && $id != '') {
         $file_konten = 'registrasi_perusahaan.php';
         $halaman_judul = 'Ubah Perusahaan';
