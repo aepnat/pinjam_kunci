@@ -82,9 +82,9 @@ $data_bulan = $connectdb->query($sql);
             ?>
             <ul class="nav nav-pills nav-stacked">
                 <li class="<?php echo ($status == 'semua') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&status=semua"><i class="fa fa-inbox"></i> Semua <span class="label label-primary pull-right"><?php echo $total_semua;?></span></a></li>
-                <li class="<?php echo ($status == 'selesai') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&status=selesai"><i class="fa fa-envelope-o"></i> Selesai <span class="label label-primary pull-right"><?php echo $total_selesai;?></span></a></a></li>
-                <li class="<?php echo ($status == 'belum') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&status=belum"><i class="fa fa-file-text-o"></i> Belum Selesai <span class="label label-primary pull-right"><?php echo $total_belum_selesai;?></span></a></a></li>
-                <li class="<?php echo ($status == 'dihapus') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&status=dihapus"><i class="fa fa-trash-o"></i> Dihapus <span class="label label-primary pull-right"><?php echo $total_dihapus;?></span></a></a></li>
+                <li class="<?php echo ($status == 'selesai') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&status=selesai"><i class="fa fa-envelope-o"></i> Selesai <span class="label label-success pull-right"><?php echo $total_selesai;?></span></a></a></li>
+                <li class="<?php echo ($status == 'belum') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&status=belum"><i class="fa fa-file-text-o"></i> Belum Selesai <span class="label label-warning pull-right"><?php echo $total_belum_selesai;?></span></a></a></li>
+                <li class="<?php echo ($status == 'dihapus') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&status=dihapus"><i class="fa fa-trash-o"></i> Dihapus <span class="label label-danger pull-right"><?php echo $total_dihapus;?></span></a></a></li>
             </ul>
         </div>
         <!-- /.box-body -->
@@ -174,12 +174,17 @@ $data_bulan = $connectdb->query($sql);
                 <td><?php echo (! $is_selesai) ? '-' : waktu_indo($data['wkt_selesai']);?></td>
                 <td><?php echo (! $is_selesai) ? '<span class="label label-warning">Belum</span>' : '<span class="label label-success">Selesai</span>';?></td>
                 <td>
-                    <?php if (! $is_selesai):?>
-                        <a class="btn btn-xs btn-warning" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=selesai&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menyelesaikan data ini?');">Selesai</a>
+                    <?php if ($data['terhapus'] == '0'):?>
+                        <?php if (! $is_selesai):?>
+                            <a class="btn btn-xs btn-warning" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=selesai&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menyelesaikan data ini?');">Selesai</a>
+                        <?php endif;?>
+                        <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=detail&id=<?php echo $data['id'];?>">Detail</a>
+                        <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=edit&id=<?php echo $data['id'];?>">Ubah</a>
+                        <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=hapus&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menghapus data ini?');">Hapus</a>
+                    <?php else:?>
+                        <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=aktifkan&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin membalikan data menjadi aktif kembali?');">Aktifkan</a>
+                        <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=hapus_selamanya&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menghapus selamanya data ini?');">Hapus Selamanya</a>
                     <?php endif;?>
-                    <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=detail&id=<?php echo $data['id'];?>">Detail</a>
-                    <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=edit&id=<?php echo $data['id'];?>">Ubah</a>
-                    <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=hapus&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menghapus data ini?');">Hapus</a>
                 </td>
               </tr>
           <?php endforeach;else:?>
