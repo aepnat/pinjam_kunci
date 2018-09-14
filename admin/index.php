@@ -1,6 +1,13 @@
 <?php
+session_start();
+
 require_once('../config/config.php');
 require_once('../fungsi/fungsi_situs.php');
+
+// Periksa kalo udah login
+if (!isset($_SESSION['pengguna_id'])) {
+    header('Location:' . $config['base_url']);
+}
 
 $data_situs = ambil_data_situs();
 extract($data_situs);
@@ -72,7 +79,7 @@ extract($data_situs);
             <!-- Menu Toggle Button -->
             <a href="<?php echo $config['base_url'];?>/admin">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span>Adi Hermawan</span>
+              <span><?php echo $_SESSION['nama_lengkap'];?></span>
             </a>
           </li>
           <!-- Control Sidebar Toggle Button -->
@@ -95,7 +102,7 @@ extract($data_situs);
           <img src="<?php echo $config['base_url'];?>/img/avatar.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Adi Hermawan</p>
+          <p><?php echo $_SESSION['nama_lengkap'];?></p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
