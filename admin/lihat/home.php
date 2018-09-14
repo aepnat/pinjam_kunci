@@ -1,10 +1,77 @@
+<?php
+
+include '../config/database.php';
+include '../fungsi/fungsi_tanggal.php';
+
+$month = date('m');
+$year = date('Y');
+
+// Total Peminjam Kunci
+$sql = 'SELECT count(*) as total FROM pinjam_kunci';
+$hasil = $connectdb->query($sql);
+$hasil = $hasil->fetch_assoc();
+$total_peminjam_kunci = $hasil['total'];
+
+// Total Peminjam Kunci per Bulan
+$sql = "SELECT count(*) as total FROM pinjam_kunci WHERE YEAR(wkt_peminjaman) = $year AND MONTH(wkt_peminjaman) = $month";
+$hasil = $connectdb->query($sql);
+$hasil = $hasil->fetch_assoc();
+$total_peminjam_kunci_per_bulan = $hasil['total'];
+
+// Total Pengguna Material
+$sql = 'SELECT count(*) as total FROM pengguna_material';
+$hasil = $connectdb->query($sql);
+$hasil = $hasil->fetch_assoc();
+$total_pengguna_material = $hasil['total'];
+
+// Total Peminjam Kunci per Bulan
+$sql = "SELECT count(*) as total FROM pengguna_material WHERE YEAR(tgl_dibuat) = $year AND MONTH(tgl_dibuat) = $month";
+$hasil = $connectdb->query($sql);
+$hasil = $hasil->fetch_assoc();
+$total_pengguna_material_per_bulan = $hasil['total'];
+
+// Statisik per bulan di tahun ini
+$sql = "SELECT YEAR(wkt_peminjaman) AS tahun,
+           MONTH(wkt_peminjaman) AS bulan,
+           COUNT(*) AS total
+    FROM   pinjam_kunci
+    WHERE  YEAR(wkt_peminjaman) = $year
+    GROUP BY
+           YEAR(wkt_peminjaman),
+           MONTH(wkt_peminjaman)";
+$hasil = $connectdb->query($sql);
+$row = array();
+while($data = $hasil->fetch_assoc()) {
+    $row[$data['bulan']] = $data;
+}
+
+$statistik = array();
+for($i=1;$i<=12;$i++){
+    if (array_key_exists($i, $row)) {
+        $statistik[] = array(
+            'y' => sprintf('%s-%s', $row[$i]['tahun'], str_pad($row[$i]['bulan'], 2, 0, STR_PAD_LEFT)),
+            'item1' => (int) $row[$i]['total'],
+        );
+    } else {
+        $statistik[] = array(
+            'y' => sprintf('%s-%s', $year, str_pad($i, 2, 0, STR_PAD_LEFT)),
+            'item1' => 0,
+        );
+    }
+}
+$statistik = json_encode($statistik);
+// echo '<pre>';
+// print_r($statistik);
+// echo '</pre>';exit();
+
+?>
 <!-- Small boxes (Stat box) -->
 <div class="row">
   <div class="col-lg-3 col-xs-6">
     <!-- small box -->
     <div class="small-box bg-aqua">
       <div class="inner">
-        <h3>150</h3>
+        <h3><?php echo $total_peminjam_kunci;?></h3>
 
         <p>Peminjaman Kunci</p>
       </div>
@@ -19,9 +86,9 @@
     <!-- small box -->
     <div class="small-box bg-aqua">
       <div class="inner">
-        <h3>53</h3>
+          <h3><?php echo $total_peminjam_kunci_per_bulan;?></h3>
 
-        <p>Peminjaman Kunci (September)</p>
+        <p>Peminjaman Kunci (<?php echo bulan($month);?>)</p>
       </div>
       <div class="icon">
         <i class="ion ion-pie-graph"></i>
@@ -34,7 +101,7 @@
     <!-- small box -->
     <div class="small-box bg-green">
       <div class="inner">
-        <h3>44</h3>
+          <h3><?php echo $total_pengguna_material;?></h3>
 
         <p>Penggunaan Material</p>
       </div>
@@ -49,7 +116,7 @@
     <!-- small box -->
     <div class="small-box bg-green">
       <div class="inner">
-        <h3>65</h3>
+          <h3><?php echo $total_pengguna_material_per_bulan;?></h3>
 
         <p>Pengunaan Material (September)</p>
       </div>
@@ -89,30 +156,20 @@ $(function () {
     var line = new Morris.Line({
       element          : 'line-chart',
       resize           : true,
-      data             : [
-        { y: '2011 Q1', item1: 2666 },
-        { y: '2011 Q2', item1: 2778 },
-        { y: '2011 Q3', item1: 4912 },
-        { y: '2011 Q4', item1: 3767 },
-        { y: '2012 Q1', item1: 6810 },
-        { y: '2012 Q2', item1: 5670 },
-        { y: '2012 Q3', item1: 4820 },
-        { y: '2012 Q4', item1: 15073 },
-        { y: '2013 Q1', item1: 10687 },
-        { y: '2013 Q2', item1: 8432 }
-      ],
+      data             : <?php echo $statistik;?>,
       xkey             : 'y',
       ykeys            : ['item1'],
-      labels           : ['Item 1'],
-      lineColors       : ['#efefef'],
+      labels           : ['Peminjam Kunci'],
+      lineColors       : ['#000'],
       lineWidth        : 2,
       hideHover        : 'auto',
       gridTextColor    : '#fff',
       gridStrokeWidth  : 0.4,
       pointSize        : 4,
-      pointStrokeColors: ['#efefef'],
-      gridLineColor    : '#efefef',
+      pointStrokeColors: ['#000'],
+      gridLineColor    : '#000',
       gridTextFamily   : 'Open Sans',
+      gridTextColor    : '#fff',
       gridTextSize     : 10
     });
 });
