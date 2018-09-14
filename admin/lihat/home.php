@@ -1,6 +1,5 @@
 <?php
 
-include '../config/database.php';
 include '../fungsi/fungsi_tanggal.php';
 
 $month = date('m');

@@ -11,8 +11,12 @@ function ambil_data_situs()
     $lihat = (isset($_POST['lihat']) && $lihat == '') ? $_POST['lihat'] : $lihat;
 
     $metode = (isset($_GET['metode'])) ? $_GET['metode'] : '';
-    $id = (isset($_GET['id'])) ? $_GET['id'] : '';
+    $metode = (isset($_POST['metode']) && $metode == '') ? $_POST['metode'] : $metode;
 
+    $id = (isset($_GET['id'])) ? $_GET['id'] : '';
+    $id = (isset($_POST['id']) && $id == '') ? $_POST['id'] : $id;
+
+    // Data Peminjaman Kunci
     if ($lihat == 'data_peminjaman_kunci') {
 
         $file_konten = "data_peminjaman_kunci.php";
@@ -32,6 +36,7 @@ function ambil_data_situs()
             $halaman_deskripsi = 'Mengubah data peminjaman kunci';
         }
 
+    // Data Penggunaan Material
     } elseif ($lihat == 'data_penggunaan_material') {
 
         $file_konten =  "data_penggunaan_material.php";
@@ -39,6 +44,7 @@ function ambil_data_situs()
         $menu_aktif = 'data_penggunaan_material';
         $halaman_deskripsi = 'Mengelola data penggunaan material';
 
+    // Data Perusahaan
     } elseif ($lihat == 'data_perusahaan') {
 
         $file_konten =  "data_perusahaan.php";
@@ -46,6 +52,7 @@ function ambil_data_situs()
         $menu_aktif = 'data_perusahaan';
         $halaman_deskripsi = 'Mengelola data perusahaan';
 
+    // Registrasi Peminjaman Kunci
     } elseif ($lihat == 'registrasi_peminjaman_kunci') {
 
         $file_konten =  "registrasi_peminjaman_kunci.php";
@@ -53,6 +60,7 @@ function ambil_data_situs()
         $menu_aktif = 'registrasi_peminjaman_kunci';
         $halaman_deskripsi = 'Melakukan entri data peminjaman kunci';
 
+    // Registrasi Penggunaan Material
     } elseif ($lihat == 'registrasi_penggunaan_material') {
 
         $file_konten =  "registrasi_penggunaan_material.php";
@@ -60,6 +68,7 @@ function ambil_data_situs()
         $menu_aktif = 'registrasi_penggunaan_material';
         $halaman_deskripsi = 'Melakukan entri data pengunaan material';
 
+    // Registrasi Perusahaan
     } elseif ($lihat == 'registrasi_perusahaan') {
 
         $file_konten =  "registrasi_perusahaan.php";
