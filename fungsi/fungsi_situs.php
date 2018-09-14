@@ -45,6 +45,18 @@ if ($lihat == 'data_peminjaman_kunci') {
     $menu_aktif = 'data_penggunaan_material';
     $halaman_deskripsi = 'Mengelola data penggunaan material';
 
+    if ($metode == 'detail' && $id != '') {
+        $file_konten = 'detail_penggunaan_material.php';
+        $halaman_judul = 'Detail Penggunaan Material';
+        $halaman_deskripsi = 'Melihat detail data penggunaan material';
+    }
+
+    if ($metode == 'edit' && $id != '') {
+        $file_konten = 'registrasi_penggunaan_material.php';
+        $halaman_judul = 'Ubah Penggunaan Material';
+        $halaman_deskripsi = 'Mengubah data penggunaan material';
+    }
+
 // Data Perusahaan
 } elseif ($lihat == 'data_perusahaan') {
 
@@ -91,10 +103,3 @@ if ($lihat == 'data_peminjaman_kunci') {
 
 }
 $file_konten = 'lihat/' . $file_konten;
-
-// return array(
-//     'file_konten' => $file_konten,
-//     'halaman_judul' => $halaman_judul,
-//     'halaman_deskripsi' => $halaman_deskripsi,
-//     'menu_aktif' => $menu_aktif
-// );

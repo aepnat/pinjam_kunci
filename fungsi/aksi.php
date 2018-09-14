@@ -185,3 +185,104 @@ if ($metode == 'input_peminjaman_kunci' || ($lihat == 'data_peminjaman_kunci' &&
         $_SESSION['error_text'] = $error_text;
     }
 }
+
+// Input Penggunaan Material
+//
+// ============================================================================
+if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_material' && $metode == 'edit' && isset($_POST['metode2']))) {
+    // Validasi
+    $fields = array(
+        'nm_material' => array(
+            'label' => 'Nama Material',
+            'max' => 15
+        ),
+        'kode_material' => array(
+            'label' => 'Kode Material',
+            'max' => 80
+        ),
+        'jenis_id' => array(
+            'label' => 'Jenis ID',
+            'max' => 10
+        ),
+        'no_id' => array(
+            'label' => 'Nomor ID',
+            'max' => 30
+        ),
+        'nm_pengguna' => array(
+            'label' => 'Nama Pengguna',
+            'max' => 80
+        ),
+        'no_telp_pengguna' => array(
+            'label' => 'No. Telp. Pengguna',
+            'max' => 15
+        ),
+        'email_pengguna' => array(
+            'label' => 'Email Pengguna',
+            'max' => 30
+        ),
+        'perusahaan_id' => array(
+            'label' => 'Perusahaan',
+            'max' => 11
+        ),
+    );
+    $error_text = array();
+    foreach ($fields as $field => $validasi) {
+        $label = $validasi['label'];
+
+        if ($_POST[$field] == '') {
+            $error_text[] = sprintf('Kolom %s tidak boleh kosong', $label);
+        }
+
+        if (isset($validasi['max']) && strlen($_POST[$field]) > $validasi['max']) {
+            $error_text[] = sprintf('Kolom %s tidak boleh melebihi %s karakter', $label, $validasi['max']);
+        }
+    }
+
+    $is_edit = isset($_POST['metode2']) && $_POST['metode2'] == 'edit';
+
+    // jika tidak ada error
+    if (empty($error_text)) {
+        $kode_material = $_POST['kode_material'];
+        $nm_material = $_POST['nm_material'];
+        $jenis_id = $_POST['jenis_id'];
+        $no_id = $_POST['no_id'];
+        $nm_pengguna = $_POST['nm_pengguna'];
+        $no_telp_pengguna = $_POST['no_telp_pengguna'];
+        $email_pengguna = $_POST['email_pengguna'];
+        $perusahaan_id = $_POST['perusahaan_id'];
+
+        if ($is_edit) {
+            $id = $_POST['id'];
+            $sql = "UPDATE pengguna_material SET
+                                    kode_material='$kode_material',
+                                    nm_material='$nm_material',
+                                    jenis_id='$jenis_id',
+                                    no_id='$no_id',
+                                    nm_pengguna='$nm_pengguna',
+                                    no_telp_pengguna='$no_telp_pengguna',
+                                    email_pengguna='$email_pengguna',
+                                    perusahaan_id='$perusahaan_id'
+                    WHERE id='$id'";
+            $sukses_text[] = 'Berhasil menyimpan data penggunaan material';
+        } else {
+            $wkt_dibuat = date("Y-m-d H:i:s");
+            $dibuat_oleh = $_SESSION['pengguna_id'];
+            $sql = "INSERT INTO pengguna_material (kode_material, nm_material, jenis_id, no_id, nm_pengguna, no_telp_pengguna, email_pengguna, perusahaan_id, tgl_dibuat, dibuat_oleh)
+            VALUES ('$kode_material', '$nm_material', '$jenis_id', '$no_id', '$nm_pengguna', '$no_telp_pengguna', '$email_pengguna', '$perusahaan_id', '$wkt_dibuat', '$dibuat_oleh')";
+            $sukses_text[] = 'Berhasil menambah data penggunaan material';
+        }
+
+        if ($connectdb->query($sql) === TRUE) {
+            $_SESSION['success_text'] = $sukses_text;
+            header('Location:' . $config['base_url'] . '/admin?lihat=data_penggunaan_material');
+            exit();
+        } else {
+            error_log('Error registrasi penggunaan material. ' . $connectdb->error);
+            $error_text[] = 'Data tidak bisa ditambah. Kegagalan sistem. Silahkan Coba lagi!';
+        }
+    }
+
+    if (!empty($error_text)) {
+        $_SESSION['error_text'] = $error_text;
+    }
+}
