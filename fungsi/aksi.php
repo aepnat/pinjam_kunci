@@ -2,7 +2,8 @@
 global $metode;
 global $lihat;
 
-// input perusahaan
+// Input Perusahaan
+// ============================================================================
 if ($metode == 'input_perusahaan' || ($lihat == 'data_perusahaan' && $metode == 'edit' && isset($_POST['metode2']))) {
     // Validasi
     $fields = array(
@@ -74,6 +75,108 @@ if ($metode == 'input_perusahaan' || ($lihat == 'data_perusahaan' && $metode == 
             header('Location:' . $config['base_url'] . '/admin?lihat=data_perusahaan');
             exit();
         } else {
+            $error_text[] = 'Data tidak bisa ditambah. Kegagalan sistem. Silahkan Coba lagi!';
+        }
+    }
+
+    if (!empty($error_text)) {
+        $_SESSION['error_text'] = $error_text;
+    }
+}
+
+
+// Input Peminjaman Kunci
+//
+// ============================================================================
+if ($metode == 'input_peminjaman_kunci' || ($lihat == 'data_peminjaman_kunci' && $metode == 'edit' && isset($_POST['metode2']))) {
+    // Validasi
+    $fields = array(
+        'kode_kunci' => array(
+            'label' => 'Kode Kunci',
+            'max' => 15
+        ),
+        'tujuan' => array(
+            'label' => 'Tujuan',
+            'max' => 80
+        ),
+        'jenis_id' => array(
+            'label' => 'Jenis ID',
+            'max' => 10
+        ),
+        'no_id' => array(
+            'label' => 'Nomor ID',
+            'max' => 30
+        ),
+        'nm_peminjam' => array(
+            'label' => 'Nama Peminjam',
+            'max' => 80
+        ),
+        'no_telp_peminjam' => array(
+            'label' => 'No. Telp. Peminjam',
+            'max' => 15
+        ),
+        'email_peminjam' => array(
+            'label' => 'Email Peminjam',
+            'max' => 30
+        ),
+        'perusahaan_id' => array(
+            'label' => 'Perusahaan',
+            'max' => 11
+        ),
+    );
+    $error_text = array();
+    foreach ($fields as $field => $validasi) {
+        $label = $validasi['label'];
+
+        if ($_POST[$field] == '') {
+            $error_text[] = sprintf('Kolom %s tidak boleh kosong', $label);
+        }
+
+        if (isset($validasi['max']) && strlen($_POST[$field]) > $validasi['max']) {
+            $error_text[] = sprintf('Kolom %s tidak boleh melebihi %s karakter', $label, $validasi['max']);
+        }
+    }
+
+    $is_edit = isset($_POST['metode2']) && $_POST['metode2'] == 'edit';
+
+    // jika tidak ada error
+    if (empty($error_text)) {
+        $kode_kunci = $_POST['kode_kunci'];
+        $tujuan = $_POST['tujuan'];
+        $jenis_id = $_POST['jenis_id'];
+        $no_id = $_POST['no_id'];
+        $nm_peminjam = $_POST['nm_peminjam'];
+        $no_telp_peminjam = $_POST['no_telp_peminjam'];
+        $email_peminjam = $_POST['email_peminjam'];
+        $perusahaan_id = $_POST['perusahaan_id'];
+
+        if ($is_edit) {
+            $id = $_POST['id'];
+            $sql = "UPDATE pinjam_kunci SET
+                                    kode_kunci='$kode_kunci',
+                                    tujuan='$tujuan',
+                                    jenis_id='$jenis_id',
+                                    no_id='$no_id',
+                                    nm_peminjam='$nm_peminjam',
+                                    no_telp_peminjam='$no_telp_peminjam',
+                                    email_peminjam='$email_peminjam',
+                                    perusahaan_id='$perusahaan_id'
+                    WHERE id='$id'";
+            $sukses_text[] = 'Berhasil menyimpan data peminjaman kunci';
+        } else {
+            $wkt_peminjaman = date("Y-m-d H:i:s");
+            $dibuat_oleh = $_SESSION['pengguna_id'];
+            $sql = "INSERT INTO pinjam_kunci (kode_kunci, tujuan, jenis_id, no_id, nm_peminjam, no_telp_peminjam, email_peminjam, perusahaan_id, wkt_peminjaman, dibuat_oleh)
+            VALUES ('$kode_kunci', '$tujuan', '$jenis_id', '$no_id', '$nm_peminjam', '$no_telp_peminjam', '$email_peminjam', '$perusahaan_id', '$wkt_peminjaman', '$dibuat_oleh')";
+            $sukses_text[] = 'Berhasil menambah data peminjaman kunci';
+        }
+
+        if ($connectdb->query($sql) === TRUE) {
+            $_SESSION['success_text'] = $sukses_text;
+            header('Location:' . $config['base_url'] . '/admin?lihat=data_peminjaman_kunci');
+            exit();
+        } else {
+            error_log('Error menambah registrasi peminjaman kunci. ' . $connectdb->error);
             $error_text[] = 'Data tidak bisa ditambah. Kegagalan sistem. Silahkan Coba lagi!';
         }
     }

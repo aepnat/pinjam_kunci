@@ -13,9 +13,6 @@ if ($metode == 'edit') {
     $hasil = $connectdb->query($sql);
     $datadb = $hasil->fetch_assoc();
     $data = array_merge($data, $datadb);
-    // echo '<pre>';
-    // print_r($data);
-    // echo '</pre>';
 }
 
 // periksa post header
