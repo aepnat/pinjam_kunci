@@ -45,7 +45,8 @@ $hasil = $connectdb->query($sql);
                 <td><?php echo $data['no_telp'];?></td>
                 <td><?php echo $data['alamat'];?></td>
                 <td>
-                    <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_perusahaan&metode=edit&id=<?php echo $data['perusahaan_id'];?>">Edit</a>
+                    <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_perusahaan&metode=edit&id=<?php echo $data['perusahaan_id'];?>">Ubah</a>
+                    <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url'];?>/admin?lihat=data_perusahaan&metode=hapus&id=<?php echo $data['perusahaan_id'];?>" onclick="return confirm('Apakah anda yakin menghapus data ini?');">Hapus</a>
                 </td>
               </tr>
           <?php endwhile; else:?>
