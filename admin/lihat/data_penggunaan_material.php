@@ -1,3 +1,8 @@
+<?php
+
+$sql = 'SELECT pengguna_material.*, perusahaan.nama as nm_perusahaan FROM pengguna_material JOIN perusahaan ON perusahaan.perusahaan_id=pengguna_material.perusahaan_id';
+$hasil = $connectdb->query($sql);
+?>
 <div class="row">
   <div class="col-xs-12">
     <div class="box">
@@ -25,17 +30,23 @@
             <th>Waktu Ambil</th>
             <th>Aksi</th>
           </tr>
-          <tr>
-            <td>Obeng</td>
-            <td>001</td>
-            <td>Poldi</td>
-            <td>PT. Huawei Indonesia</td>
-            <td>02 April 2018 16:00:00</td>
-            <td>
-                <button class="btn btn-xs btn-primary">Detail</button>
-                <button class="btn btn-xs btn-success">Edit</button>
-            </td>
-          </tr>
+          <?php if ($hasil->num_rows > 0): while($data = $hasil->fetch_assoc()):?>
+              <tr>
+                <td><?php echo $data['nm_material'];?></td>
+                <td><?php echo $data['kode_material'];?></td>
+                <td><?php echo $data['nm_pengguna'];?></td>
+                <td><?php echo $data['nm_perusahaan'];?></td>
+                <td><?php echo waktu_indo($data['tgl_dibuat']);?></td>
+                <td>
+                    <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material&metode=detail&id=<?php echo $data['id'];?>">Detail</a>
+                    <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material&metode=edit&id=<?php echo $data['id'];?>">Ubah</a>
+                </td>
+              </tr>
+          <?php endwhile;else:?>
+              <tr>
+                  <td colspan="6">Data tidak ditemukan</td>
+              </tr>
+          <?php endif;?>
         </table>
       </div>
       <!-- /.box-body -->
