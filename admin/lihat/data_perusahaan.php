@@ -1,9 +1,5 @@
 <?php
 
-include '../config/config.php';
-include '../config/database.php';
-include '../fungsi/fungsi_tanggal.php';
-
 // Total Peminjam Kunci
 $sql = 'SELECT * FROM perusahaan';
 
@@ -49,7 +45,7 @@ $hasil = $connectdb->query($sql);
                 <td><?php echo $data['no_telp'];?></td>
                 <td><?php echo $data['alamat'];?></td>
                 <td>
-                    <a class="btn btn-xs btn-primary" href="">Detail</a>
+                    <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_perusahaan&metode=detail&id=<?php echo $data['perusahaan_id'];?>">Detail</a>
                     <a class="btn btn-xs btn-success" href="<?php echo $config['base_url'];?>/admin?lihat=data_perusahaan&metode=edit&id=<?php echo $data['perusahaan_id'];?>">Edit</a>
                 </td>
               </tr>

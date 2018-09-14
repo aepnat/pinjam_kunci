@@ -4,6 +4,7 @@ session_start();
 require_once('../config/config.php');
 require_once('../config/database.php');
 require_once('../fungsi/fungsi_situs.php');
+require_once('../fungsi/fungsi_tanggal.php');
 require_once('../fungsi/aksi.php');
 
 // Periksa kalo udah login
