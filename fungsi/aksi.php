@@ -408,7 +408,7 @@ if ($lihat == 'data_peminjaman_kunci' && $metode == 'hapus') {
 if ($lihat == 'data_penggunaan_material' && $metode == 'hapus') {
     global $id;
 
-    $location_header = 'Location: ' . $config['base_url'] . '/admin?lihat=data_peminjaman_kunci';
+    $location_header = 'Location: ' . $config['base_url'] . '/admin?lihat=data_penggunaan_material';
 
     // check exists
     $sql = "SELECT * FROM pengguna_material WHERE id='$id'";
