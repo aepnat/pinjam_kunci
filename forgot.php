@@ -11,30 +11,55 @@ if (isset($_SESSION['pengguna_id'])) {
 
 $error_text = array();
 
-// periksa kalo ada request untuk login
-if (isset($_POST['method']) && $_POST['method'] == 'login') {
+// periksa kalo ada request untuk forgot
+if (isset($_POST['method']) && $_POST['method'] == 'forgot') {
     // periksa kalo email dan password tidak kosong
-    if (isset($_POST['email']) && isset($_POST['password']) && $_POST['email'] != '' && $_POST['password'] != '') {
-        $stmt = $connectdb->prepare("SELECT * FROM pengguna WHERE email = ? AND password = ?");
-        $stmt->bind_param('ss', $_POST['email'], md5($_POST['password']));
-        $stmt->execute();
-        $hasil = $stmt->get_result();
-        $pengguna = $hasil->fetch_object();
+    if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirm']) && $_POST['email'] != '' && $_POST['password'] != '' && $_POST['password_confirm'] != '') {
+        if ($_POST['password'] != $_POST['password_confirm']) {
+            $error_text[] = 'Ketik Ulang Password harus sama dengan Password';
+        }
+
+        if (empty($error_text)) {
+            $stmt = $connectdb->prepare("SELECT * FROM pengguna WHERE email = ?");
+            $stmt->bind_param('s', $_POST['email']);
+            $stmt->execute();
+            $hasil = $stmt->get_result();
+            $pengguna = $hasil->fetch_object();
+            if (! $pengguna) {
+                $error_text[] = 'Akun tidak ditemukkan.';
+            }
+        }
 
         // kalo pengguna ketemu
-        if ($pengguna) {
-            // simpan session semua data pengguna
-            foreach ($pengguna as $k => $v) {
-                $_SESSION[$k] = $v;
-            }
+        if (empty($error_text)) {
+            $pengguna_id = $pengguna->pengguna_id;
+            $password = md5($_POST['password']);
+            $sql = "UPDATE pengguna SET password='$password' WHERE pengguna_id='$pengguna_id'";
 
-            // redirect ke admin
-            header('Location:' . $config['base_url'] . '/admin');
-        } else {
-            $error_text[] = 'Email atau Password salah.';
+            if ($connectdb->query($sql) === TRUE) {
+                $_SESSION['success_text'][] = 'Berhasil merubah password. Silahkan login dengan password baru.';
+                header('Location:' . $config['base_url']);
+                exit();
+            } else {
+                $error_text[] = 'Data tidak bisa ditambah. Kegagalan sistem. Silahkan Coba lagi!';
+            }
         }
     } else {
-        $error_text[] = 'Email dan Password tidak boleh kosong';
+        if (isset($_POST['email']) && $_POST['email'] == '') {
+            $error_text[] = 'Email tidak boleh kosong';
+        }
+
+        if (isset($_POST['password']) && $_POST['password'] == '') {
+            $error_text[] = 'Password tidak boleh kosong';
+        }
+
+        if (isset($_POST['password_confirm']) && $_POST['password_confirm'] == '') {
+            $error_text[] = 'Ketik Ulang Password tidak boleh kosong';
+        } else {
+            if ($_POST['password'] !== $_POST['password_confirm']) {
+                $error_text[] = 'Ketik Ulang Password harus sama dengan Password';
+            }
+        }
     }
 }
 
@@ -78,7 +103,7 @@ if (isset($_SESSION['error_text'])) {
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-      <p class="login-box-msg">Masukkan email dan kata kunci untuk masuk.</p>
+      <p class="login-box-msg">Masukkan email dan kata kunci baru untuk melakukan atur ulang password.</p>
       <?php if (!empty($error_text)):?>
           <div class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -98,25 +123,27 @@ if (isset($_SESSION['error_text'])) {
       <?php endif;?>
     <form action="" method="post">
       <div class="form-group has-feedback">
-        <input type="email" name="email" class="form-control" placeholder="Email" required>
+        <input type="email" name="email" class="form-control" placeholder="Email" value="<?php echo (isset($_POST['email'])) ? $_POST['email'] : '';?>" required>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" name="password" class="form-control" placeholder="Kata Kunci" required>
+        <input type="password" name="password" class="form-control" placeholder="Kata Kunci Baru" required>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" name="password_confirm" class="form-control" placeholder="Ketik Ulang Kata Kunci Baru" required>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Masuk</button>
-          <input type="hidden" name="method" value="login" />
+        <div class="col-xs-5">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Atur Ulang Password</button>
+          <input type="hidden" name="method" value="forgot" />
         </div>
         <!-- /.col -->
       </div>
     </form>
     <br>
-    <a href="forgot.php" class="text-center">Lupa Password</a>
-    <br>
-    <a href="register.php" class="text-center">Daftar baru</a>
+    <a href="index.php" class="text-center">Login</a>
   </div>
   <!-- /.login-box-body -->
 </div>
