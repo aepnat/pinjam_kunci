@@ -4,6 +4,8 @@ session_start();
 include "config/config.php";
 include "config/database.php";
 
+require_once('fungsi/fungsi_pengguna.php');
+
 // kalo sudah login redirect ke admin
 if (isset($_SESSION['pengguna_id'])) {
     header('Location:' . $config['base_url'] . '/admin');
@@ -16,7 +18,9 @@ if (isset($_POST['method']) && $_POST['method'] == 'login') {
     // periksa kalo email dan password tidak kosong
     if (isset($_POST['email']) && isset($_POST['password']) && $_POST['email'] != '' && $_POST['password'] != '') {
         $stmt = $connectdb->prepare("SELECT * FROM pengguna WHERE email = ? AND password = ?");
-        $stmt->bind_param('ss', $_POST['email'], md5($_POST['password']));
+        $email = $_POST['email'];
+        $password = md5($_POST['password']);
+        $stmt->bind_param('ss', $email, $password);
         $stmt->execute();
         $hasil = $stmt->get_result();
         $pengguna = $hasil->fetch_object();
@@ -27,6 +31,8 @@ if (isset($_POST['method']) && $_POST['method'] == 'login') {
             foreach ($pengguna as $k => $v) {
                 $_SESSION[$k] = $v;
             }
+
+            log_pengguna('Login ke Aplikasi');
 
             // redirect ke admin
             header('Location:' . $config['base_url'] . '/admin');

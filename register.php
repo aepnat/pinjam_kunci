@@ -4,6 +4,8 @@ session_start();
 include "config/config.php";
 include "config/database.php";
 
+require_once('fungsi/fungsi_pengguna.php');
+
 // kalo sudah login redirect ke admin
 if (isset($_SESSION['pengguna_id'])) {
     header('Location:' . $config['base_url'] . '/admin');
@@ -44,6 +46,8 @@ if (isset($_POST['method']) && $_POST['method'] == 'register') {
                 $sql = "INSERT INTO pengguna (email, password, nama_lengkap, tgl_dibuat) VALUES ('$email', '$password', '$nama', '$tgl_dibuat')";
 
                 if ($connectdb->query($sql) === TRUE) {
+                    $pengguna_id = $connectdb->insert_id;
+                    log_pengguna('Daftar Baru', $pengguna_id);
                     $_SESSION['success_text'][] = 'Berhasil membuat akun';
                     header('Location:' . $config['base_url']);
                     exit();
