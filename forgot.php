@@ -4,6 +4,8 @@ session_start();
 include "config/config.php";
 include "config/database.php";
 
+require_once('fungsi/fungsi_pengguna.php');
+
 // kalo sudah login redirect ke admin
 if (isset($_SESSION['pengguna_id'])) {
     header('Location:' . $config['base_url'] . '/admin');
@@ -37,6 +39,7 @@ if (isset($_POST['method']) && $_POST['method'] == 'forgot') {
             $sql = "UPDATE pengguna SET password='$password' WHERE pengguna_id='$pengguna_id'";
 
             if ($connectdb->query($sql) === TRUE) {
+                log_pengguna('Atur Ulang Password', $pengguna_id);
                 $_SESSION['success_text'][] = 'Berhasil merubah password. Silahkan login dengan password baru.';
                 header('Location:' . $config['base_url']);
                 exit();

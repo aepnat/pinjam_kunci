@@ -1,4 +1,6 @@
 <?php
+require_once('fungsi_pengguna.php');
+
 global $metode;
 global $lihat;
 
@@ -73,6 +75,14 @@ if ($metode == 'input_perusahaan' || ($lihat == 'data_perusahaan' && $metode == 
         }
 
         if ($connectdb->query($sql) === TRUE) {
+            log_pengguna(array(
+                'log' => ($is_edit) ? 'Ubah data perusahaan' : 'Tambah data perusahaan',
+                'log_data' => json_encode(array(
+                    'nama' => $nama,
+                    'no_telp' => $no_telp,
+                    'alamat' => $alamat
+                )),
+            ));
             $_SESSION['success_text'] = $sukses_text;
             header('Location:' . $config['base_url'] . '/admin?lihat=data_perusahaan');
             exit();
@@ -175,6 +185,19 @@ if ($metode == 'input_peminjaman_kunci' || ($lihat == 'data_peminjaman_kunci' &&
         }
 
         if ($connectdb->query($sql) === TRUE) {
+            log_pengguna(array(
+                'log' => ($is_edit) ? 'Ubah data peminjaman kunci' : 'Tambah data peminjaman kunci',
+                'log_data' => json_encode(array(
+                    'kode_kunci' => $kode_kunci,
+                    'tujuan' => $tujuan,
+                    'jenis_id' => $jenis_id,
+                    'no_id' => $no_id,
+                    'nm_peminjam' => $nm_peminjam,
+                    'no_telp_peminjam' => $no_telp_peminjam,
+                    'email_peminjam' => $email_peminjam,
+                    'perusahaan_id' => $perusahaan_id,
+                )),
+            ));
             $_SESSION['success_text'] = $sukses_text;
             header('Location:' . $config['base_url'] . '/admin?lihat=data_peminjaman_kunci');
             exit();
@@ -277,6 +300,19 @@ if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_materi
         }
 
         if ($connectdb->query($sql) === TRUE) {
+            log_pengguna(array(
+                'log' => ($is_edit) ? 'Ubah data penggunaan material' : 'Tambah data penggunaan material',
+                'log_data' => json_encode(array(
+                    'kode_material' => $kode_material,
+                    'nm_material' => $nm_material,
+                    'jenis_id' => $jenis_id,
+                    'no_id' => $no_id,
+                    'nm_pengguna' => $nm_pengguna,
+                    'no_telp_pengguna' => $no_telp_pengguna,
+                    'email_pengguna' => $email_pengguna,
+                    'perusahaan_id' => $perusahaan_id,
+                )),
+            ));
             $_SESSION['success_text'] = $sukses_text;
             header('Location:' . $config['base_url'] . '/admin?lihat=data_penggunaan_material');
             exit();
@@ -332,6 +368,7 @@ if ($lihat == 'data_perusahaan' && $metode == 'hapus') {
     // check exists
     $sql = "SELECT * FROM perusahaan WHERE perusahaan_id='$id'";
     $hasil = $connectdb->query($sql);
+    $perusahaan = $hasil->fetch_array(MYSQLI_ASSOC);
     if ($hasil->num_rows < 1) {
         $_SESSION['error_text'] = array('Data perusahaan tidak ditemukan.');
         header($location_header);
@@ -359,6 +396,18 @@ if ($lihat == 'data_perusahaan' && $metode == 'hapus') {
     // delete
     $sql = "DELETE FROM perusahaan WHERE perusahaan_id='$id'";
     if ($connectdb->query($sql) === TRUE) {
+        $nama = $perusahaan->nama;
+        $no_telp = $perusahaan->no_telp;
+        $alamat = $perusahaan->alamat;
+        log_pengguna(array(
+            'log' => 'Hapus data perusahaan',
+            'log_data' => json_encode(array(
+                'nama' => $nama,
+                'no_telp' => $no_telp,
+                'alamat' => $alamat,
+            )),
+        ));
+
         $_SESSION['success_text'] = array('Data perusahaan berhasil dihapus.');
     } else {
         error_log('Error hapus data perusahaan. ' . $connectdb->error);
@@ -484,6 +533,13 @@ if ($lihat == 'data_penggunaan_material' && $metode == 'hapus') {
     // delete
     $sql = "DELETE FROM pengguna_material WHERE id='$id'";
     if ($connectdb->query($sql) === TRUE) {
+        $pengguna_material = $hasil->fetch_array(MYSQLI_ASSOC);
+        unset($pengguna_material['tgl_dibuat']);
+        unset($pengguna_material['dibuat_oleh']);
+        log_pengguna(array(
+            'log' => 'Hapus data penggunaan material',
+            'log_data' => json_encode($pengguna_material),
+        ));
         $_SESSION['success_text'] = array('Data pengunaan material berhasil dihapus.');
     } else {
         error_log('Error hapus data pengunaan material. ' . $connectdb->error);
