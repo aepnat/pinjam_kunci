@@ -133,7 +133,7 @@ $statistik = json_encode($statistik);
           <div class="box-header">
             <i class="fa fa-th"></i>
 
-            <h3 class="box-title">Statistik Peminjaman Kunci Tahun <?php echo date('Y');?></h3>
+            <h3 class="box-title">Statistik Peminjaman Kunci Tahun <?php echo date('Y'); ?></h3>
           </div>
           <div class="box-body border-radius-none">
             <div class="chart" id="line-chart" style="height: 400px;"></div>
@@ -153,7 +153,7 @@ $(function () {
     var line = new Morris.Line({
       element          : 'line-chart',
       resize           : true,
-      data             : <?php echo $statistik;?>,
+      data             : <?php echo $statistik; ?>,
       xkey             : 'y',
       ykeys            : ['item1'],
       labels           : ['Peminjam Kunci'],

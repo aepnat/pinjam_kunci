@@ -55,7 +55,7 @@ $is_selesai = ($data['wkt_selesai'] != null || $data['wkt_selesai'] != '') ? tru
             <!-- /.box-body -->
 
             <div class="box-footer">
-              <a class="btn btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci">Kembali ke Data Peminjaman Kunci</a>
+              <a class="btn btn-primary" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci">Kembali ke Data Peminjaman Kunci</a>
             </div>
         </div>
         <!-- /.box -->

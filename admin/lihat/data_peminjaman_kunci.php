@@ -252,16 +252,16 @@ $total_jenis_pekerjaan_troubleshoot = $hasil->num_rows;
                         <a class="btn btn-xs btn-success" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=edit&id=<?php echo $data['id']; ?>">Ubah</a>
                         <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=hapus&id=<?php echo $data['id']; ?>" onclick="return confirm('Apakah anda yakin menghapus data ini?');">Hapus</a>
                     <?php else:?>
-                        <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=aktifkan&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin membalikan data menjadi aktif kembali?');">Aktifkan</a>
-                        <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci&metode=hapus_selamanya&id=<?php echo $data['id'];?>" onclick="return confirm('Apakah anda yakin menghapus selamanya data ini?');">Hapus Selamanya</a>
-                    <?php endif;?>
+                        <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=aktifkan&id=<?php echo $data['id']; ?>" onclick="return confirm('Apakah anda yakin membalikan data menjadi aktif kembali?');">Aktifkan</a>
+                        <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=hapus_selamanya&id=<?php echo $data['id']; ?>" onclick="return confirm('Apakah anda yakin menghapus selamanya data ini?');">Hapus Selamanya</a>
+                    <?php endif; ?>
                 </td>
               </tr>
           <?php endforeach; else:?>
               <tr>
                   <td colspan="8">Data tidak ditemukan</td>
               </tr>
-          <?php endif;?>
+          <?php endif; ?>
         </table>
       </div>
       <!-- /.box-body -->

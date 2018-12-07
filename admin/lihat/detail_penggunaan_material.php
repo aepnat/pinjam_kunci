@@ -52,7 +52,7 @@ $data = $hasil->fetch_assoc();
             <!-- /.box-body -->
 
             <div class="box-footer">
-                <a class="btn btn-primary" href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material">Kembali ke Data Penggunaan Material</a>
+                <a class="btn btn-primary" href="<?php echo $config['base_url']; ?>/admin?lihat=data_penggunaan_material">Kembali ke Data Penggunaan Material</a>
             </div>
           </form>
         </div>
