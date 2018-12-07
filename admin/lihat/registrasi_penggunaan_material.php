@@ -4,8 +4,7 @@ global $id;
 
 $data = array(
     'perusahaan_id' => '',
-    'nm_material' => '',
-    'kode_material' => '',
+    'id_material' => '',
     'jenis_id' => '',
     'no_id' => '',
     'nm_pengguna' => '',
@@ -33,6 +32,10 @@ if (isset($_POST)) {
 $sql = "SELECT * FROM perusahaan";
 $data_perusahaan = $connectdb->query($sql);
 
+// data material
+$sql = "SELECT * FROM material";
+$data_material = $connectdb->query($sql);
+
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -59,12 +62,17 @@ $data_perusahaan = $connectdb->query($sql);
                 </div>
               </div>
               <div class="form-group">
-                <label for="nm_material">Nama Material</label>
-                <input type="text" name="nm_material" class="form-control" id="nm_material" placeholder="Masukan Nama Material" value="<?php echo $data['nm_material'];?>">
-              </div>
-              <div class="form-group">
-                <label for="kode_material">Kode Material</label>
-                <input type="text" name="kode_material" class="form-control" id="kode_material" placeholder="Masukan Kode Material" value="<?php echo $data['kode_material'];?>">
+                <label>Material</label>
+                <select name="id_material" class="form-control">
+                  <option value="">Pilih Material</option>
+                  <?php if ($data_material->num_rows > 0): while($material = $data_material->fetch_assoc()):?>
+                      <option value="<?php echo $material['id'];?>" <?php echo ($data['id_material'] == $material['id']) ? 'selected="selected"' : '';?>><?php printf('%s - %s', $material['kode_material'], $material['nm_material']);?></option>
+                  <?php endwhile; endif;?>
+                </select>
+                <br>
+                <div class="callout callout-info">
+                    <p>Jika data material tidak ada. Silahkan tambah data material di menu Registrasi Material atau klik <a href="<?php $config['base_url'];?>/admin?lihat=registrasi_material">[link ini]</a></p>
+                </div>
               </div>
               <div class="form-group">
                 <label>Jenis ID</label>

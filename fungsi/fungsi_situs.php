@@ -1,5 +1,7 @@
 <?php
 
+require_once('../config/config.php');
+
 $file_konten = 'home.php';
 $halaman_judul = 'Home';
 $menu_aktif = 'home';
@@ -71,6 +73,20 @@ if ($lihat == 'data_peminjaman_kunci') {
         $halaman_deskripsi = 'Mengubah data perusahaan';
     }
 
+// Data Material
+} elseif ($lihat == 'data_material') {
+
+    $file_konten =  "data_material.php";
+    $halaman_judul = 'Data Material';
+    $menu_aktif = 'data_material';
+    $halaman_deskripsi = 'Mengelola data material';
+
+    if ($metode == 'edit' && $id != '') {
+        $file_konten = 'registrasi_material.php';
+        $halaman_judul = 'Ubah Material';
+        $halaman_deskripsi = 'Mengubah data material';
+    }
+
 // Registrasi Peminjaman Kunci
 } elseif ($lihat == 'registrasi_peminjaman_kunci') {
 
@@ -95,5 +111,164 @@ if ($lihat == 'data_peminjaman_kunci') {
     $menu_aktif = 'registrasi_perusahaan';
     $halaman_deskripsi = 'Melakukan entri data perusahaan';
 
+// Registrasi Material
+} elseif ($lihat == 'registrasi_material') {
+
+    $file_konten =  "registrasi_material.php";
+    $halaman_judul = 'Registrasi Material';
+    $menu_aktif = 'registrasi_material';
+    $halaman_deskripsi = 'Melakukan entri data material';
+
 }
 $file_konten = 'lihat/' . $file_konten;
+
+$menus = array(
+    'home' => array(
+        'label' => 'Home',
+        'url' => 'admin',
+        'active' => ($menu_aktif == 'home'),
+        'icon' => 'dashboard',
+    ),
+    'peminjaman_kunci' => array(
+        'label' => 'Peminjaman Kunci',
+        'url' => '#',
+        'active' => (in_array($menu_aktif, array('data_peminjaman_kunci', 'registrasi_peminjaman_kunci'))),
+        'open' => TRUE,
+        'icon' => 'table',
+        'submenus' => array(
+            'data' => array(
+                'label' => 'Data',
+                'icon' => 'table',
+                'url' => 'admin?lihat=data_peminjaman_kunci',
+                'active' => ($menu_aktif == 'data_peminjaman_kunci'),
+            ),
+            'add' => array(
+                'label' => 'Registrasi',
+                'icon' => 'plus',
+                'url' => 'admin?lihat=registrasi_peminjaman_kunci',
+                'active' => ($menu_aktif == 'registrasi_peminjaman_kunci'),
+            ),
+        )
+    ),
+    'data_penggunaan_material' => array(
+        'label' => 'Penggunaan Material',
+        'url' => '#',
+        'active' => (in_array($menu_aktif, array('data_penggunaan_material', 'registrasi_penggunaan_material'))),
+        'open' => TRUE,
+        'icon' => 'table',
+        'submenus' => array(
+            'data' => array(
+                'label' => 'Data',
+                'icon' => 'table',
+                'url' => 'admin?lihat=data_penggunaan_material',
+                'active' => ($menu_aktif == 'data_penggunaan_material'),
+            ),
+            'add' => array(
+                'label' => 'Registrasi',
+                'icon' => 'plus',
+                'url' => 'admin?lihat=registrasi_penggunaan_material',
+                'active' => ($menu_aktif == 'registrasi_penggunaan_material'),
+            ),
+        )
+    ),
+    'data_material' => array(
+        'label' => 'Data Material',
+        'url' => '#',
+        'active' => (in_array($menu_aktif, array('data_material', 'registrasi_material'))),
+        'open' => TRUE,
+        'icon' => 'table',
+        'submenus' => array(
+            'data' => array(
+                'label' => 'Data',
+                'icon' => 'table',
+                'url' => 'admin?lihat=data_material',
+                'active' => ($menu_aktif == 'data_material'),
+            ),
+            'add' => array(
+                'label' => 'Registrasi',
+                'icon' => 'plus',
+                'url' => 'admin?lihat=registrasi_material',
+                'active' => ($menu_aktif == 'registrasi_material'),
+            ),
+        )
+    ),
+    'data_perusahaan' => array(
+        'label' => 'Data Perusahaan',
+        'url' => '#',
+        'active' => (in_array($menu_aktif, array('data_perusahaan', 'registrasi_perusahaan'))),
+        'open' => TRUE,
+        'icon' => 'table',
+        'submenus' => array(
+            'data' => array(
+                'label' => 'Data',
+                'icon' => 'table',
+                'url' => 'admin?lihat=data_perusahaan',
+                'active' => ($menu_aktif == 'data_perusahaan'),
+            ),
+            'add' => array(
+                'label' => 'Registrasi',
+                'icon' => 'plus',
+                'url' => 'admin?lihat=registrasi_perusahaan',
+                'active' => ($menu_aktif == 'registrasi_perusahaan'),
+            ),
+        )
+    ),
+);
+
+// Build Menu
+$menu_items = array();
+foreach ($menus as $key => $menu) {
+    $default_args_menu = array(
+        'label' => '',
+        'url' => '',
+        'active' => FALSE,
+        'open' => FALSE,
+        'icon' => 'dashboard',
+        'submenus' => array()
+    );
+    // merge with default args
+    $menu = array_merge($default_args_menu, $menu);
+
+    // Build class
+    $class = array();
+    if (!empty($menu['submenus'])) {
+        $class[] = 'treeview';
+    }
+    if ($menu['active']) {
+        $class[] = 'active';
+    }
+    $class = implode(' ', $class);
+
+    $link = sprintf('%s/%s', $config['base_url'], $menu['url']);
+
+    // Build Submenus
+    $submenus = '';
+    if (!empty($menu['submenus'])) {
+        $submenu_items = array();
+        foreach ($menu['submenus'] as $submenu) {
+            $default_args_submenu = array(
+                'label' => '',
+                'url' => '',
+                'active' => FALSE,
+                'open' => FALSE,
+                'icon' => 'circle-o',
+                'submenus' => array()
+            );
+            // merge with default args
+            $submenu = array_merge($default_args_submenu, $submenu);
+            
+            // Build class
+            $class_submenu = array();
+            $class_submenu[] = ($submenu['active']) ? ' active' : '';
+            $class_submenu = implode(' ', $class_submenu);
+
+            $link_submenu = sprintf('%s/%s', $config['base_url'], $submenu['url']);
+
+            $submenu_items[] = sprintf( '<li class="%s"><a href="%s"><i class="fa fa-%s"></i> <span>%s</span></a></li>', $class_submenu, $link_submenu, $submenu['icon'], $submenu['label']);
+        }
+        $submenus = sprintf('<ul class="treeview-menu">%s</ul>', implode('', $submenu_items));
+    }
+    // END Build Submenu
+
+    $menu_items[] = sprintf( '<li class="%s"><a href="%s"><i class="fa fa-%s"></i> <span>%s</span></a>%s</li>', $class, $link, $menu['icon'], $menu['label'], $submenus);
+}
