@@ -4,11 +4,21 @@ require_once('../fungsi/paginator.class.php');
 $table_name = 'pinjam_kunci';
 
 $status = (isset($_GET['status'])) ? $_GET['status'] : 'semua';
+$jenis_pekerjaan = (isset($_GET['jenis_pekerjaan'])) ? $_GET['jenis_pekerjaan'] : 'semua';
 
 $terhapus = ($status == 'dihapus') ? '1' : '0';
 $query = "SELECT $table_name.*, perusahaan.nama as nm_perusahaan FROM $table_name JOIN perusahaan ON perusahaan.perusahaan_id=pinjam_kunci.perusahaan_id WHERE terhapus='$terhapus'";
 $query .= ($status == 'selesai' && $status != 'belum') ? ' AND wkt_selesai IS NOT NULL' : '';
 $query .= ($status == 'belum' && $status != 'selesai') ? ' AND wkt_selesai IS NULL' : '';
+
+// jenis pekerjaan
+$query .= (in_array($jenis_pekerjaan, array('add_new', 'troubleshoot', 'maintenance'))) ? " AND jenis_pekerjaan = '$jenis_pekerjaan'" : '';
+
+// perusahaan
+if (isset($_GET['perusahaan']) && $_GET['perusahaan'] != '') {
+    $perusahaan_id = $_GET['perusahaan'];
+    $query .= " AND perusahaan.perusahaan_id = '$perusahaan_id'";
+}
 
 // tahun
 if (isset($_GET['tahun']) && $_GET['tahun'] != '') {
@@ -52,6 +62,10 @@ $sql = "SELECT * FROM $table_name WHERE terhapus='1'";
 $hasil = $connectdb->query($sql);
 $total_dihapus = $hasil->num_rows;
 
+// data perusahaan peminjam
+$sql = "SELECT perusahaan.perusahaan_id, perusahaan.nama FROM $table_name JOIN perusahaan ON perusahaan.perusahaan_id={$table_name}.perusahaan_id GROUP BY perusahaan.perusahaan_id";
+$data_perusahaan_peminjam = $connectdb->query($sql);
+
 // data tahun
 $sql = "SELECT EXTRACT(YEAR FROM wkt_peminjaman) as tahun FROM $table_name GROUP BY tahun";
 $data_tahun = $connectdb->query($sql);
@@ -59,10 +73,30 @@ $data_tahun = $connectdb->query($sql);
 // data bulan
 $sql = "SELECT EXTRACT(MONTH FROM wkt_peminjaman) as bulan FROM $table_name GROUP BY bulan";
 $data_bulan = $connectdb->query($sql);
+
+// total jenis pekerjaan semua
+$sql = "SELECT id FROM $table_name";
+$hasil = $connectdb->query($sql);
+$total_jenis_pekerjaan_semua = $hasil->num_rows;
+
+// total jenis pekerjaan add new
+$sql = "SELECT id FROM $table_name WHERE jenis_pekerjaan='add_new'";
+$hasil = $connectdb->query($sql);
+$total_jenis_pekerjaan_add_new = $hasil->num_rows;
+
+// total jenis pekerjaan maintenance
+$sql = "SELECT id FROM $table_name WHERE jenis_pekerjaan='maintenance'";
+$hasil = $connectdb->query($sql);
+$total_jenis_pekerjaan_maintenance = $hasil->num_rows;
+
+// total jenis pekerjaan troubleshoot
+$sql = "SELECT id FROM $table_name WHERE jenis_pekerjaan='troubleshoot'";
+$hasil = $connectdb->query($sql);
+$total_jenis_pekerjaan_troubleshoot = $hasil->num_rows;
 ?>
 
 <div class="row">
- <div class="col-md-3">
+ <div class="col-md-2">
     <div class="box box-solid">
         <div class="box-header with-border">
             <h3 class="box-title">Status</h3>
@@ -91,6 +125,32 @@ $data_bulan = $connectdb->query($sql);
     </div>
     <div class="box box-solid">
         <div class="box-header with-border">
+            <h3 class="box-title">Jenis Pekerjaan</h3>
+
+            <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body no-padding">
+            <?php $jenis_pekerjaan = isset($_GET['jenis_pekerjaan']) ? $_GET['jenis_pekerjaan'] : 'semua';?>
+            <?php $params = (isset($_GET)) ? $_GET : array();?>
+            <?php
+            if (isset($params['jenis_pekerjaan'])) {
+                unset($params['jenis_pekerjaan']);
+            }
+            ?>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="<?php echo ($jenis_pekerjaan == 'semua') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&jenis_pekerjaan=semua"><i class="fa fa-bars"></i> Semua <span class="label label-primary pull-right"><?php echo $total_jenis_pekerjaan_semua;?></span></a></li>
+                <li class="<?php echo ($jenis_pekerjaan == 'add_new') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&jenis_pekerjaan=add_new"><i class="fa fa-edit"></i> Add New <span class="label label-success pull-right"><?php echo $total_jenis_pekerjaan_add_new;?></span></a></a></li>
+                <li class="<?php echo ($jenis_pekerjaan == 'maintenance') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&jenis_pekerjaan=maintenance"><i class="fa fa-gear"></i> Maintenance <span class="label label-warning pull-right"><?php echo $total_jenis_pekerjaan_maintenance;?></span></a></a></li>
+                <li class="<?php echo ($jenis_pekerjaan == 'troubleshoot') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?<?php echo http_build_query($params);?>&jenis_pekerjaan=troubleshoot"><i class="fa fa-gears"></i> Troubleshoot <span class="label label-danger pull-right"><?php echo $total_jenis_pekerjaan_troubleshoot;?></span></a></a></li>
+            </ul>
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <div class="box box-solid">
+        <div class="box-header with-border">
             <h3 class="box-title">Saring</h3>
 
             <div class="box-tools">
@@ -102,13 +162,21 @@ $data_bulan = $connectdb->query($sql);
             <form action="" method="GET">
                 <?php $params = (isset($_GET)) ? $_GET : array();?>
                 <?php foreach($params as $k => $v):
-                    if (in_array($k, array('tahun', 'bulan'))) {
+                    if (in_array($k, array('perusahaan', 'tahun', 'bulan'))) {
                         continue;
                     }
                     ?>
                     <input type="hidden" name="<?php echo $k;?>" value="<?php echo $v;?>" />
                 <?php endforeach;?>
                 <ul class="nav nav-pills nav-stacked">
+                    <li>
+                        <select name="perusahaan" class="form-control">
+                            <option value="">Pilih Perusahaan</option>
+                            <?php if ($data_perusahaan_peminjam->num_rows > 0): while($data = $data_perusahaan_peminjam->fetch_assoc()):?>
+                                <option value="<?php echo $data['perusahaan_id'];?>" <?php echo (isset($_GET['perusahaan']) && $_GET['perusahaan'] == $data['perusahaan_id']) ? 'selected="selected"' : '';?>><?php echo $data['nama'];?></option>
+                            <?php endwhile;endif;?>
+                        </select><br>
+                    </li>
                     <li>
                         <select name="tahun" class="form-control">
                             <option value="">Pilih Tahun</option>
@@ -134,7 +202,7 @@ $data_bulan = $connectdb->query($sql);
     </div>
 
  </div>
-  <div class="col-md-9">
+  <div class="col-md-10">
     <div class="box">
       <div class="box-header">
         <h3 class="box-title">Data</h3>
@@ -157,6 +225,7 @@ $data_bulan = $connectdb->query($sql);
               <th>Tujuan</th>
               <th>Peminjam</th>
               <th>Perusahaan</th>
+              <th>Pekerjaan</th>
               <th>Waktu Pinjam</th>
               <th>Waktu Selesai</th>
               <th>Status</th>
@@ -170,6 +239,7 @@ $data_bulan = $connectdb->query($sql);
                 <td><?php echo $data['tujuan'];?></td>
                 <td><?php echo $data['nm_peminjam'];?></td>
                 <td><?php echo $data['nm_perusahaan'];?></td>
+                <td><span class="label label-default"><?php echo ucwords(str_replace('_', ' ', $data['jenis_pekerjaan']));?></span></td>
                 <td><?php echo waktu_indo($data['wkt_peminjaman']);?></td>
                 <td><?php echo (! $is_selesai) ? '-' : waktu_indo($data['wkt_selesai']);?></td>
                 <td><?php echo (! $is_selesai) ? '<span class="label label-warning">Belum</span>' : '<span class="label label-success">Selesai</span>';?></td>

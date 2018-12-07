@@ -198,6 +198,10 @@ if ($metode == 'input_peminjaman_kunci' || ($lihat == 'data_peminjaman_kunci' &&
             'label' => 'Tujuan',
             'max' => 80
         ),
+        'jenis_pekerjaan' => array(
+            'label' => 'Jenis Pekerjaans',
+            'max' => 30
+        ),
         'jenis_id' => array(
             'label' => 'Jenis ID',
             'max' => 10
@@ -242,6 +246,7 @@ if ($metode == 'input_peminjaman_kunci' || ($lihat == 'data_peminjaman_kunci' &&
     if (empty($error_text)) {
         $kode_kunci = $_POST['kode_kunci'];
         $tujuan = $_POST['tujuan'];
+        $jenis_pekerjaan = $_POST['jenis_pekerjaan'];
         $jenis_id = $_POST['jenis_id'];
         $no_id = $_POST['no_id'];
         $nm_peminjam = $_POST['nm_peminjam'];
@@ -254,6 +259,7 @@ if ($metode == 'input_peminjaman_kunci' || ($lihat == 'data_peminjaman_kunci' &&
             $sql = "UPDATE pinjam_kunci SET
                                     kode_kunci='$kode_kunci',
                                     tujuan='$tujuan',
+                                    jenis_pekerjaan='$jenis_pekerjaan',
                                     jenis_id='$jenis_id',
                                     no_id='$no_id',
                                     nm_peminjam='$nm_peminjam',
@@ -265,8 +271,8 @@ if ($metode == 'input_peminjaman_kunci' || ($lihat == 'data_peminjaman_kunci' &&
         } else {
             $wkt_peminjaman = date("Y-m-d H:i:s");
             $dibuat_oleh = $_SESSION['pengguna_id'];
-            $sql = "INSERT INTO pinjam_kunci (kode_kunci, tujuan, jenis_id, no_id, nm_peminjam, no_telp_peminjam, email_peminjam, perusahaan_id, wkt_peminjaman, dibuat_oleh)
-            VALUES ('$kode_kunci', '$tujuan', '$jenis_id', '$no_id', '$nm_peminjam', '$no_telp_peminjam', '$email_peminjam', '$perusahaan_id', '$wkt_peminjaman', '$dibuat_oleh')";
+            $sql = "INSERT INTO pinjam_kunci (kode_kunci, tujuan, jenis_pekerjaan, jenis_id, no_id, nm_peminjam, no_telp_peminjam, email_peminjam, perusahaan_id, wkt_peminjaman, dibuat_oleh)
+            VALUES ('$kode_kunci', '$tujuan', '$jenis_pekerjaan', '$jenis_id', '$no_id', '$nm_peminjam', '$no_telp_peminjam', '$email_peminjam', '$perusahaan_id', '$wkt_peminjaman', '$dibuat_oleh')";
             $sukses_text[] = 'Berhasil menambah data peminjaman kunci';
         }
 
@@ -276,6 +282,7 @@ if ($metode == 'input_peminjaman_kunci' || ($lihat == 'data_peminjaman_kunci' &&
                 'log_data' => json_encode(array(
                     'kode_kunci' => $kode_kunci,
                     'tujuan' => $tujuan,
+                    'jenis_pekerjaan' => $jenis_pekerjaan,
                     'jenis_id' => $jenis_id,
                     'no_id' => $no_id,
                     'nm_peminjam' => $nm_peminjam,
