@@ -1,23 +1,23 @@
 <?php
 session_start();
 
-include "config/config.php";
-include "config/database.php";
+include 'config/config.php';
+include 'config/database.php';
 
-require_once('fungsi/fungsi_pengguna.php');
+require_once 'fungsi/fungsi_pengguna.php';
 
 // kalo sudah login redirect ke admin
 if (isset($_SESSION['pengguna_id'])) {
-    header('Location:' . $config['base_url'] . '/admin');
+    header('Location:'.$config['base_url'].'/admin');
 }
 
-$error_text = array();
+$error_text = [];
 
 // periksa kalo ada request untuk login
 if (isset($_POST['method']) && $_POST['method'] == 'login') {
     // periksa kalo email dan password tidak kosong
     if (isset($_POST['email']) && isset($_POST['password']) && $_POST['email'] != '' && $_POST['password'] != '') {
-        $stmt = $connectdb->prepare("SELECT * FROM pengguna WHERE email = ? AND password = ?");
+        $stmt = $connectdb->prepare('SELECT * FROM pengguna WHERE email = ? AND password = ?');
         $email = $_POST['email'];
         $password = md5($_POST['password']);
         $stmt->bind_param('ss', $email, $password);
@@ -35,7 +35,7 @@ if (isset($_POST['method']) && $_POST['method'] == 'login') {
             log_pengguna('Login ke Aplikasi');
 
             // redirect ke admin
-            header('Location:' . $config['base_url'] . '/admin');
+            header('Location:'.$config['base_url'].'/admin');
         } else {
             $error_text[] = 'Email atau Password salah.';
         }
@@ -89,18 +89,18 @@ if (isset($_SESSION['error_text'])) {
           <div class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
               <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-              <?php echo implode('<br>', $error_text);?>
+              <?php echo implode('<br>', $error_text); ?>
           </div>
-      <?php endif;?>
+      <?php endif; ?>
       <?php if (isset($_SESSION['success_text'])): ?>
-            <?php if(!empty($_SESSION['success_text'])):?>
+            <?php if (!empty($_SESSION['success_text'])):?>
             <div class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                <?php echo implode('<br>', $_SESSION['success_text']);?>
+                <?php echo implode('<br>', $_SESSION['success_text']); ?>
             </div>
-            <?php endif;?>
-            <?php unset($_SESSION['success_text']);?>
+            <?php endif; ?>
+            <?php unset($_SESSION['success_text']); ?>
       <?php endif;?>
     <form action="" method="post">
       <div class="form-group has-feedback">

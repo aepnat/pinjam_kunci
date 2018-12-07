@@ -1,18 +1,18 @@
 <?php
 session_start();
 
-require_once('../config/config.php');
-require_once('../config/database.php');
-require_once('../fungsi/fungsi_situs.php');
-require_once('../fungsi/fungsi_tanggal.php');
-require_once('../fungsi/aksi.php');
+require_once '../config/config.php';
+require_once '../config/database.php';
+require_once '../fungsi/fungsi_situs.php';
+require_once '../fungsi/fungsi_tanggal.php';
+require_once '../fungsi/aksi.php';
 
 // Periksa kalo udah login
 if (!isset($_SESSION['pengguna_id'])) {
-    $_SESSION['error_text'] = array(
-        'Silahkan login untuk melihat halaman admin!'
-    );
-    header('Location:' . $config['base_url']);
+    $_SESSION['error_text'] = [
+        'Silahkan login untuk melihat halaman admin!',
+    ];
+    header('Location:'.$config['base_url']);
     die();
 }
 
@@ -22,7 +22,7 @@ if (!isset($_SESSION['pengguna_id'])) {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?php echo $halaman_judul;?> | <?php echo $config['site_title'];?></title>
+  <title><?php echo $halaman_judul; ?> | <?php echo $config['site_title']; ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -64,7 +64,7 @@ if (!isset($_SESSION['pengguna_id'])) {
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="<?php echo $config['base_url'];?>/admin" class="logo">
+    <a href="<?php echo $config['base_url']; ?>/admin" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">APK</span>
       <!-- logo for regular state and mobile devices -->
@@ -83,14 +83,14 @@ if (!isset($_SESSION['pengguna_id'])) {
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
-            <a href="<?php echo $config['base_url'];?>/admin">
+            <a href="<?php echo $config['base_url']; ?>/admin">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span><?php echo $_SESSION['nama_lengkap'];?></span>
+              <span><?php echo $_SESSION['nama_lengkap']; ?></span>
             </a>
           </li>
           <!-- Control Sidebar Toggle Button -->
           <li>
-            <a href="<?php echo $config['base_url'];?>/logout.php"><i class="fa fa-gears"></i> Keluar</a>
+            <a href="<?php echo $config['base_url']; ?>/logout.php"><i class="fa fa-gears"></i> Keluar</a>
           </li>
         </ul>
       </div>
@@ -105,10 +105,10 @@ if (!isset($_SESSION['pengguna_id'])) {
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="<?php echo $config['base_url'];?>/img/avatar.png" class="img-circle" alt="User Image">
+          <img src="<?php echo $config['base_url']; ?>/img/avatar.png" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?php echo $_SESSION['nama_lengkap'];?></p>
+          <p><?php echo $_SESSION['nama_lengkap']; ?></p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -117,7 +117,7 @@ if (!isset($_SESSION['pengguna_id'])) {
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MENU</li>
-        <?php echo implode('', $menu_items);?>
+        <?php echo implode('', $menu_items); ?>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -129,8 +129,8 @@ if (!isset($_SESSION['pengguna_id'])) {
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <?php echo $halaman_judul;?>
-        <small><?php echo $halaman_deskripsi;?></small>
+        <?php echo $halaman_judul; ?>
+        <small><?php echo $halaman_deskripsi; ?></small>
       </h1>
       <ol class="breadcrumb">
         <li class="active"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -140,26 +140,26 @@ if (!isset($_SESSION['pengguna_id'])) {
     <!-- Main content -->
     <section class="content">
         <?php if (isset($_SESSION['success_text'])): ?>
-            <?php if(!empty($_SESSION['success_text'])):?>
+            <?php if (!empty($_SESSION['success_text'])):?>
             <div class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                <?php echo implode('<br>', $_SESSION['success_text']);?>
+                <?php echo implode('<br>', $_SESSION['success_text']); ?>
             </div>
-            <?php endif;?>
-            <?php unset($_SESSION['success_text']);?>
-        <?php endif;?>
+            <?php endif; ?>
+            <?php unset($_SESSION['success_text']); ?>
+        <?php endif; ?>
 
         <?php if (isset($_SESSION['error_text'])):?>
-            <?php if(!empty($_SESSION['error_text'])):?>
+            <?php if (!empty($_SESSION['error_text'])):?>
                 <div class="alert alert-danger alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-                    <?php echo implode('<br>', $_SESSION['error_text']);?>
+                    <?php echo implode('<br>', $_SESSION['error_text']); ?>
                 </div>
-            <?php endif;?>
-            <?php unset($_SESSION['error_text']);?>
-        <?php endif;?>
+            <?php endif; ?>
+            <?php unset($_SESSION['error_text']); ?>
+        <?php endif; ?>
 
         <?php include $file_konten;?>
     </section>

@@ -1,17 +1,17 @@
 <?php
 session_start();
 
-include "config/config.php";
-include "config/database.php";
+include 'config/config.php';
+include 'config/database.php';
 
-require_once('fungsi/fungsi_pengguna.php');
+require_once 'fungsi/fungsi_pengguna.php';
 
 // kalo sudah login redirect ke admin
 if (isset($_SESSION['pengguna_id'])) {
-    header('Location:' . $config['base_url'] . '/admin');
+    header('Location:'.$config['base_url'].'/admin');
 }
 
-$error_text = array();
+$error_text = [];
 
 // periksa kalo ada request untuk forgot
 if (isset($_POST['method']) && $_POST['method'] == 'forgot') {
@@ -22,12 +22,12 @@ if (isset($_POST['method']) && $_POST['method'] == 'forgot') {
         }
 
         if (empty($error_text)) {
-            $stmt = $connectdb->prepare("SELECT * FROM pengguna WHERE email = ?");
+            $stmt = $connectdb->prepare('SELECT * FROM pengguna WHERE email = ?');
             $stmt->bind_param('s', $_POST['email']);
             $stmt->execute();
             $hasil = $stmt->get_result();
             $pengguna = $hasil->fetch_object();
-            if (! $pengguna) {
+            if (!$pengguna) {
                 $error_text[] = 'Akun tidak ditemukkan.';
             }
         }
@@ -38,10 +38,10 @@ if (isset($_POST['method']) && $_POST['method'] == 'forgot') {
             $password = md5($_POST['password']);
             $sql = "UPDATE pengguna SET password='$password' WHERE pengguna_id='$pengguna_id'";
 
-            if ($connectdb->query($sql) === TRUE) {
+            if ($connectdb->query($sql) === true) {
                 log_pengguna('Atur Ulang Password', $pengguna_id);
                 $_SESSION['success_text'][] = 'Berhasil merubah password. Silahkan login dengan password baru.';
-                header('Location:' . $config['base_url']);
+                header('Location:'.$config['base_url']);
                 exit();
             } else {
                 $error_text[] = 'Data tidak bisa ditambah. Kegagalan sistem. Silahkan Coba lagi!';
@@ -111,19 +111,19 @@ if (isset($_SESSION['error_text'])) {
           <div class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
               <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-              <?php echo implode('<br>', $error_text);?>
+              <?php echo implode('<br>', $error_text); ?>
           </div>
-      <?php endif;?>
+      <?php endif; ?>
       <?php if (isset($_SESSION['success_text'])): ?>
-            <?php if(!empty($_SESSION['success_text'])):?>
+            <?php if (!empty($_SESSION['success_text'])):?>
             <div class="alert alert-success alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                <?php echo implode('<br>', $_SESSION['success_text']);?>
+                <?php echo implode('<br>', $_SESSION['success_text']); ?>
             </div>
-            <?php endif;?>
-            <?php unset($_SESSION['success_text']);?>
-      <?php endif;?>
+            <?php endif; ?>
+            <?php unset($_SESSION['success_text']); ?>
+      <?php endif; ?>
     <form action="" method="post">
       <div class="form-group has-feedback">
         <input type="email" name="email" class="form-control" placeholder="Email" value="<?php echo (isset($_POST['email'])) ? $_POST['email'] : '';?>" required>

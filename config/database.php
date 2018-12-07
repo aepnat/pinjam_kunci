@@ -10,5 +10,5 @@ global $connectdb;
 
 // Check connection
 if ($connectdb->connect_error) {
-    die("Connection failed: " . $connectdb->connect_error);
+    die('Connection failed: '.$connectdb->connect_error);
 }

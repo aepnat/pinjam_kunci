@@ -37,23 +37,23 @@ $sql = "SELECT YEAR(wkt_peminjaman) AS tahun,
            YEAR(wkt_peminjaman),
            MONTH(wkt_peminjaman)";
 $hasil = $connectdb->query($sql);
-$row = array();
-while($data = $hasil->fetch_assoc()) {
+$row = [];
+while ($data = $hasil->fetch_assoc()) {
     $row[$data['bulan']] = $data;
 }
 
-$statistik = array();
-for($i=1;$i<=12;$i++){
+$statistik = [];
+for ($i = 1; $i <= 12; $i++) {
     if (array_key_exists($i, $row)) {
-        $statistik[] = array(
-            'y' => sprintf('%s-%s', $row[$i]['tahun'], str_pad($row[$i]['bulan'], 2, 0, STR_PAD_LEFT)),
+        $statistik[] = [
+            'y'     => sprintf('%s-%s', $row[$i]['tahun'], str_pad($row[$i]['bulan'], 2, 0, STR_PAD_LEFT)),
             'item1' => (int) $row[$i]['total'],
-        );
+        ];
     } else {
-        $statistik[] = array(
-            'y' => sprintf('%s-%s', $year, str_pad($i, 2, 0, STR_PAD_LEFT)),
+        $statistik[] = [
+            'y'     => sprintf('%s-%s', $year, str_pad($i, 2, 0, STR_PAD_LEFT)),
             'item1' => 0,
-        );
+        ];
     }
 }
 $statistik = json_encode($statistik);
@@ -68,14 +68,14 @@ $statistik = json_encode($statistik);
     <!-- small box -->
     <div class="small-box bg-aqua">
       <div class="inner">
-        <h3><?php echo $total_peminjam_kunci;?></h3>
+        <h3><?php echo $total_peminjam_kunci; ?></h3>
 
         <p>Peminjaman Kunci</p>
       </div>
       <div class="icon">
         <i class="ion ion-stats-bars"></i>
       </div>
-      <a href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
@@ -83,14 +83,14 @@ $statistik = json_encode($statistik);
     <!-- small box -->
     <div class="small-box bg-aqua">
       <div class="inner">
-          <h3><?php echo $total_peminjam_kunci_per_bulan;?></h3>
+          <h3><?php echo $total_peminjam_kunci_per_bulan; ?></h3>
 
-        <p>Peminjaman Kunci (<?php echo bulan($month);?>)</p>
+        <p>Peminjaman Kunci (<?php echo bulan($month); ?>)</p>
       </div>
       <div class="icon">
         <i class="ion ion-pie-graph"></i>
       </div>
-      <a href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
@@ -98,14 +98,14 @@ $statistik = json_encode($statistik);
     <!-- small box -->
     <div class="small-box bg-green">
       <div class="inner">
-          <h3><?php echo $total_pengguna_material;?></h3>
+          <h3><?php echo $total_pengguna_material; ?></h3>
 
         <p>Penggunaan Material</p>
       </div>
       <div class="icon">
         <i class="ion ion-stats-bars"></i>
       </div>
-      <a href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="<?php echo $config['base_url']; ?>/admin?lihat=data_penggunaan_material" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
@@ -113,14 +113,14 @@ $statistik = json_encode($statistik);
     <!-- small box -->
     <div class="small-box bg-green">
       <div class="inner">
-          <h3><?php echo $total_pengguna_material_per_bulan;?></h3>
+          <h3><?php echo $total_pengguna_material_per_bulan; ?></h3>
 
         <p>Pengunaan Material (September)</p>
       </div>
       <div class="icon">
         <i class="ion ion-pie-graph"></i>
       </div>
-      <a href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      <a href="<?php echo $config['base_url']; ?>/admin?lihat=data_penggunaan_material" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
     </div>
   </div>
   <!-- ./col -->
