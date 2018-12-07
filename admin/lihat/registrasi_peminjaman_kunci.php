@@ -5,6 +5,7 @@ global $id;
 $data = array(
     'kode_kunci' => '',
     'tujuan' => '',
+    'jenis_pekerjaan' => '',
     'jenis_id' => '',
     'no_id' => '',
     'nm_peminjam' => '',
@@ -70,6 +71,15 @@ $data_perusahaan = $connectdb->query($sql);
                 <input type="text" name="tujuan" class="form-control" id="tujuan" placeholder="Masukan Tujuan" value="<?php echo $data['tujuan'];?>">
               </div>
               <div class="form-group">
+                <label>Jenis Pekerjaan</label>
+                <select name="jenis_pekerjaan" class="form-control">
+                  <option value="">Pilih Jenis Pekerjaan</option>
+                  <option value="add_new" <?php echo ($data['jenis_pekerjaan'] == 'add_new') ? 'selected="selected"' : '';?>>Add New</option>
+                  <option value="maintenance" <?php echo ($data['jenis_pekerjaan'] == 'maintenance') ? 'selected="selected"' : '';?>>Maintenance</option>
+                  <option value="troubleshoot " <?php echo ($data['jenis_pekerjaan'] == 'troubleshoot') ? 'selected="selected"' : '';?>>Troubleshoot</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Jenis ID Peminjam</label>
                 <select name="jenis_id" class="form-control">
                   <option value="">Pilih Jenis ID</option>
@@ -91,7 +101,7 @@ $data_perusahaan = $connectdb->query($sql);
               </div>
               <div class="form-group">
                 <label for="email_peminjam">Email Peminjam</label>
-                <input type="text" name="email_peminjam" class="form-control" id="email_peminjam" placeholder="Masukan Email Peminjam" value="<?php echo $data['email_peminjam'];?>">
+                <input type="email" name="email_peminjam" class="form-control" id="email_peminjam" placeholder="Masukan Email Peminjam" value="<?php echo $data['email_peminjam'];?>">
               </div>
             </div>
             <!-- /.box-body -->
