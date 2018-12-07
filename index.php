@@ -101,7 +101,7 @@ if (isset($_SESSION['error_text'])) {
             </div>
             <?php endif; ?>
             <?php unset($_SESSION['success_text']); ?>
-      <?php endif;?>
+      <?php endif; ?>
     <form action="" method="post">
       <div class="form-group has-feedback">
         <input type="email" name="email" class="form-control" placeholder="Email" required>

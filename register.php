@@ -131,7 +131,7 @@ if (isset($_SESSION['error_text'])) {
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="email" name="email" class="form-control" placeholder="Email" value="<?php echo (isset($_POST['email'])) ? $_POST['email'] : '';?>" required>
+        <input type="email" name="email" class="form-control" placeholder="Email" value="<?php echo (isset($_POST['email'])) ? $_POST['email'] : ''; ?>" required>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">

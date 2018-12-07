@@ -65,4 +65,4 @@ if (isset($_POST)) {
     </div>
 </div>
 
-<?php unset($_SESSION['error_text']);?>
+<?php unset($_SESSION['error_text']); ?>

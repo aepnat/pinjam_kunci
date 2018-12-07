@@ -109,8 +109,8 @@ $data_perusahaan = $connectdb->query($sql);
             <div class="box-footer">
                 <?php if ($metode == 'edit') :?>
                     <a href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci" class="btn btn-primary">Kembali</a>
-                    <input type="hidden" name="id" value="<?php echo $data['id'];?>" />
-                    <input type="hidden" name="metode2" value="<?php echo $metode;?>" />
+                    <input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
+                    <input type="hidden" name="metode2" value="<?php echo $metode; ?>" />
                 <?php endif;?>
                 <button type="submit" class="btn btn-success">Simpan</button>
                 <input type="hidden" name="metode" value="input_peminjaman_kunci" />
