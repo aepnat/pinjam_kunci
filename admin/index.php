@@ -117,14 +117,7 @@ if (!isset($_SESSION['pengguna_id'])) {
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MENU</li>
-        <!-- Optionally, you can add icons to the links -->
-        <li class="<?php echo ($menu_aktif == 'home') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin"><i class="fa fa-dashboard"></i> <span>Home</span></a></li>
-        <li class="<?php echo ($menu_aktif == 'data_peminjaman_kunci') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?lihat=data_peminjaman_kunci"><i class="fa fa-table"></i> <span>Data Peminjaman Kunci</span></a></li>
-        <li class="<?php echo ($menu_aktif == 'data_penggunaan_material') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?lihat=data_penggunaan_material"><i class="fa fa-table"></i> <span>Data Pengunaan Material</span></a></li>
-        <li class="<?php echo ($menu_aktif == 'data_perusahaan') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?lihat=data_perusahaan"><i class="fa fa-table"></i> <span>Data Perusahaan</span></a></li>
-        <li class="<?php echo ($menu_aktif == 'registrasi_peminjaman_kunci') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?lihat=registrasi_peminjaman_kunci"><i class="fa fa-edit"></i> <span>Registasi Peminjaman Kunci</span></a></li>
-        <li class="<?php echo ($menu_aktif == 'registrasi_penggunaan_material') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?lihat=registrasi_penggunaan_material"><i class="fa fa-edit"></i> <span>Registrasi Penggunaan Material</span></a></li>
-        <li class="<?php echo ($menu_aktif == 'registrasi_perusahaan') ? 'active' : '';?>"><a href="<?php echo $config['base_url'];?>/admin?lihat=registrasi_perusahaan"><i class="fa fa-edit"></i> <span>Registrasi Perusahaan</span></a></li>
+        <?php echo implode('', $menu_items);?>
       </ul>
       <!-- /.sidebar-menu -->
     </section>

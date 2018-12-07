@@ -1,7 +1,9 @@
 <?php
 require_once('../fungsi/paginator.class.php');
 
-$query = 'SELECT pengguna_material.*, perusahaan.nama as nm_perusahaan FROM pengguna_material JOIN perusahaan ON perusahaan.perusahaan_id=pengguna_material.perusahaan_id';
+$query = 'SELECT pengguna_material.*, perusahaan.nama as nm_perusahaan, material.nm_material, material.kode_material FROM pengguna_material 
+JOIN perusahaan ON perusahaan.perusahaan_id=pengguna_material.perusahaan_id
+JOIN material ON material.id=pengguna_material.id_material';
 
 $limit      = ( isset( $_GET['limit'] ) ) ? $_GET['limit'] : 20;
 $page       = ( isset( $_GET['page'] ) ) ? $_GET['page'] : 1;
