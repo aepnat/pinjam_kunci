@@ -1,61 +1,59 @@
 <?php
 session_start();
 
-include "config/config.php";
-include "config/database.php";
+include 'config/config.php';
+include 'config/database.php';
 
-require_once('fungsi/fungsi_pengguna.php');
+require_once 'fungsi/fungsi_pengguna.php';
 
 // kalo sudah login redirect ke admin
 if (isset($_SESSION['pengguna_id'])) {
-    header('Location:' . $config['base_url'] . '/admin');
+    header('Location:'.$config['base_url'].'/admin');
 }
 
-$error_text = array();
+$error_text = [];
 
 // periksa kalo ada request untuk register
 if (isset($_POST['method']) && $_POST['method'] == 'register') {
     // periksa kalo email dan password tidak kosong
     if (
-        isset($_POST['nama']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirm']) 
+        isset($_POST['nama']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirm'])
         && $_POST['nama'] != '' && $_POST['email'] != '' && $_POST['password'] != '' && $_POST['password_confirm'] != '') {
+        if ($_POST['password'] != $_POST['password_confirm']) {
+            $error_text[] = 'Ketik Ulang Password harus sama dengan Password';
+        }
 
-            if ($_POST['password'] != $_POST['password_confirm']) {
-                $error_text[] = 'Ketik Ulang Password harus sama dengan Password';
+        // kalo pengguna ketemu
+        if (empty($error_text)) {
+            // Periksa pengguna sudah ada
+            $stmt = $connectdb->prepare('SELECT * FROM pengguna WHERE email = ?');
+            $email = $_POST['email'];
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+            $hasil = $stmt->get_result();
+            $pengguna = $hasil->fetch_object();
+            if ($pengguna) {
+                $error_text[] = 'Email sudah terdaftar, Silahkan gunakan email yang lain.';
             }
+        }
 
-            // kalo pengguna ketemu
-            if (empty($error_text)) {
-                // Periksa pengguna sudah ada
-                $stmt = $connectdb->prepare("SELECT * FROM pengguna WHERE email = ?");
-                $email = $_POST['email'];
-                $stmt->bind_param('s', $email);
-                $stmt->execute();
-                $hasil = $stmt->get_result();
-                $pengguna = $hasil->fetch_object();
-                if ($pengguna) {
-                    $error_text[] = 'Email sudah terdaftar, Silahkan gunakan email yang lain.';
-                }
+        if (empty($error_text)) {
+            $email = $_POST['email'];
+            $password = md5($_POST['password']);
+            $nama = $_POST['nama'];
+            $tgl_dibuat = date('Y-m-d H:i:s');
+            $sql = "INSERT INTO pengguna (email, password, nama_lengkap, tgl_dibuat) VALUES ('$email', '$password', '$nama', '$tgl_dibuat')";
+
+            if ($connectdb->query($sql) === true) {
+                $pengguna_id = $connectdb->insert_id;
+                log_pengguna('Daftar Baru', $pengguna_id);
+                $_SESSION['success_text'][] = 'Berhasil membuat akun';
+                header('Location:'.$config['base_url']);
+                exit();
+            } else {
+                $error_text[] = 'Data tidak bisa ditambah. Kegagalan sistem. Silahkan Coba lagi!';
             }
-
-            if (empty($error_text)) {
-                $email = $_POST['email'];
-                $password = md5($_POST['password']);
-                $nama = $_POST['nama'];
-                $tgl_dibuat = date("Y-m-d H:i:s");
-                $sql = "INSERT INTO pengguna (email, password, nama_lengkap, tgl_dibuat) VALUES ('$email', '$password', '$nama', '$tgl_dibuat')";
-
-                if ($connectdb->query($sql) === TRUE) {
-                    $pengguna_id = $connectdb->insert_id;
-                    log_pengguna('Daftar Baru', $pengguna_id);
-                    $_SESSION['success_text'][] = 'Berhasil membuat akun';
-                    header('Location:' . $config['base_url']);
-                    exit();
-                } else {
-                    $error_text[] = 'Data tidak bisa ditambah. Kegagalan sistem. Silahkan Coba lagi!';
-                }
-        
-            }
+        }
     } else {
         if (isset($_POST['nama']) && $_POST['nama'] == '') {
             $error_text[] = 'Nama tidak boleh kosong';
@@ -124,12 +122,12 @@ if (isset($_SESSION['error_text'])) {
           <div class="alert alert-danger alert-dismissible">
               <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
               <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-              <?php echo implode('<br>', $error_text);?>
+              <?php echo implode('<br>', $error_text); ?>
           </div>
-      <?php endif;?>
+      <?php endif; ?>
     <form action="" method="post">
     <div class="form-group has-feedback">
-        <input type="nama" name="nama" class="form-control" placeholder="Nama Lengkap" value="<?php echo (isset($_POST['nama'])) ? $_POST['nama'] : '';?>" required>
+        <input type="nama" name="nama" class="form-control" placeholder="Nama Lengkap" value="<?php echo (isset($_POST['nama'])) ? $_POST['nama'] : ''; ?>" required>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">

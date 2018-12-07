@@ -18,35 +18,35 @@ $data = $hasil->fetch_assoc();
             <div class="box-body">
               <div class="form-group">
                 <label>Perusahaan</label>
-                <p><?php echo $data['nm_perusahaan'];?></p>
+                <p><?php echo $data['nm_perusahaan']; ?></p>
               </div>
               <div class="form-group">
                 <label for="nm_material">Nama Material</label>
-                <p><?php echo $data['nm_material'];?></p>
+                <p><?php echo $data['nm_material']; ?></p>
               </div>
               <div class="form-group">
                 <label for="kode_material">Kode Material</label>
-                <p><?php echo $data['kode_material'];?></p>
+                <p><?php echo $data['kode_material']; ?></p>
               </div>
               <div class="form-group">
                 <label>Jenis ID</label>
-                <p><?php echo strtoupper($data['jenis_id']);?></p>
+                <p><?php echo strtoupper($data['jenis_id']); ?></p>
               </div>
               <div class="form-group">
                 <label for="no_id">Nomor ID Pengguna</label>
-                <p><?php echo $data['no_id'];?></p>
+                <p><?php echo $data['no_id']; ?></p>
               </div>
               <div class="form-group">
                 <label for="nm_pengguna">Nama Pengguna</label>
-                <p><?php echo $data['nm_pengguna'];?></p>
+                <p><?php echo $data['nm_pengguna']; ?></p>
               </div>
               <div class="form-group">
                 <label for="no_telp_pengguna">No. Telp Pengguna</label>
-                <p><?php echo $data['no_telp_pengguna'];?></p>
+                <p><?php echo $data['no_telp_pengguna']; ?></p>
               </div>
               <div class="form-group">
                 <label for="email_pengguna">Email Pengguna</label>
-                <p><?php echo $data['email_pengguna'];?></p>
+                <p><?php echo $data['email_pengguna']; ?></p>
               </div>
             </div>
             <!-- /.box-body -->

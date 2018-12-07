@@ -2,10 +2,10 @@
 global $metode;
 global $id;
 
-$data = array(
+$data = [
     'kode_material' => '',
-    'nm_material' => ''
-);
+    'nm_material'   => '',
+];
 
 if ($metode == 'edit') {
     $sql = "SELECT * FROM material WHERE id = $id";
@@ -36,21 +36,21 @@ if (isset($_POST)) {
             <div class="box-body">
               <div class="form-group">
                 <label for="kode_material">Kode Material</label>
-                <input type="text" name="kode_material" class="form-control" id="kode_material" placeholder="Masukan Kode Material" value="<?php echo $data['kode_material'];?>">
+                <input type="text" name="kode_material" class="form-control" id="kode_material" placeholder="Masukan Kode Material" value="<?php echo $data['kode_material']; ?>">
               </div>
               <div class="form-group">
                 <label for="nm_material">Nama Material</label>
-                <input type="text" name="nm_material" class="form-control" id="nm_material" placeholder="Masukan Nama Material" value="<?php echo $data['nm_material'];?>">
+                <input type="text" name="nm_material" class="form-control" id="nm_material" placeholder="Masukan Nama Material" value="<?php echo $data['nm_material']; ?>">
               </div>
             </div>
             <!-- /.box-body -->
 
             <div class="box-footer">
                 <?php if ($metode == 'edit') :?>
-                    <a href="<?php echo $config['base_url'];?>/admin?lihat=data_material" class="btn btn-primary">Kembali</a>
-                    <input type="hidden" name="id" value="<?php echo $data['id'];?>" />
-                    <input type="hidden" name="metode2" value="<?php echo $metode;?>" />
-                <?php endif;?>
+                    <a href="<?php echo $config['base_url']; ?>/admin?lihat=data_material" class="btn btn-primary">Kembali</a>
+                    <input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
+                    <input type="hidden" name="metode2" value="<?php echo $metode; ?>" />
+                <?php endif; ?>
                 <button type="submit" class="btn btn-success">Simpan</button>
                 <input type="hidden" name="metode" value="input_material" />
             </div>
