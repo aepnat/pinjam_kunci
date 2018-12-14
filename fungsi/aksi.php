@@ -112,6 +112,10 @@ if ($metode == 'input_material' || ($lihat == 'data_material' && $metode == 'edi
             'label' => 'Nama Material',
             'max'   => 120,
         ],
+        'kuantitas' => [
+            'label' => 'Kuantitas',
+            'max'   => 11,
+        ],
     ];
     $error_text = [];
     foreach ($fields as $field => $validasi) {
@@ -150,15 +154,16 @@ if ($metode == 'input_material' || ($lihat == 'data_material' && $metode == 'edi
     if (empty($error_text)) {
         $kode_material = $_POST['kode_material'];
         $nm_material = $_POST['nm_material'];
+        $kuantitas = $_POST['kuantitas'];
         $tgl_dibuat = date('Y-m-d H:i:s');
         $dibuat_oleh = $_SESSION['pengguna_id'];
 
         if ($is_edit) {
             $id = $_POST['id'];
-            $sql = "UPDATE material SET kode_material='$kode_material', nm_material='$nm_material' WHERE id='$id'";
+            $sql = "UPDATE material SET kode_material='$kode_material', nm_material='$nm_material', kuantitas='$kuantitas' WHERE id='$id'";
             $sukses_text[] = 'Berhasil menyimpan data material';
         } else {
-            $sql = "INSERT INTO material (kode_material, nm_material, tgl_dibuat, dibuat_oleh) VALUES ('$kode_material', '$nm_material', '$tgl_dibuat', '$dibuat_oleh')";
+            $sql = "INSERT INTO material (kode_material, nm_material, kuantitas, tgl_dibuat, dibuat_oleh) VALUES ('$kode_material', '$nm_material', '$kuantitas', '$tgl_dibuat', '$dibuat_oleh')";
             $sukses_text[] = 'Berhasil menambah data material';
         }
 
@@ -168,6 +173,7 @@ if ($metode == 'input_material' || ($lihat == 'data_material' && $metode == 'edi
                 'log_data' => json_encode([
                     'kode_material' => $kode_material,
                     'nm_material'   => $nm_material,
+                    'kuantitas'     => $kuantitas,
                 ]),
             ]);
             $_SESSION['success_text'] = $sukses_text;
@@ -340,6 +346,10 @@ if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_materi
             'label' => 'Material',
             'max'   => 11,
         ],
+        'kuantitas' => [
+            'label' => 'Kuantitas Material',
+            'max'   => 11,
+        ],
     ];
     $error_text = [];
     foreach ($fields as $field => $validasi) {
@@ -354,6 +364,21 @@ if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_materi
         }
     }
 
+    // validasi kuantitas
+    if (empty($error_text)) {
+        $id_material = $_POST['id_material'];
+        $kuantitas = $_POST['kuantitas'];
+        $material = $connectdb->query("SELECT kuantitas FROM material WHERE id='$id_material'");
+        if (! $material) {
+            $error_text[] = 'Data material tidak ditemukkan. Silahkan coba lagi!';
+        } else {
+            $material = $material->fetch_assoc();
+            if ($kuantitas > $material['kuantitas']) {
+                $error_text[] = 'Kuantitas yang dimasukan melebihi kuantitas material yang tersedia. Kuantitas yang tersedia adalah ' . $material['kuantitas'];
+            }
+        }
+    }
+
     $is_edit = isset($_POST['metode2']) && $_POST['metode2'] == 'edit';
 
     // jika tidak ada error
@@ -365,6 +390,7 @@ if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_materi
         $email_pengguna = $_POST['email_pengguna'];
         $perusahaan_id = $_POST['perusahaan_id'];
         $id_material = $_POST['id_material'];
+        $kuantitas = $_POST['kuantitas'];
 
         if ($is_edit) {
             $id = $_POST['id'];
@@ -376,13 +402,14 @@ if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_materi
                                     email_pengguna='$email_pengguna',
                                     perusahaan_id='$perusahaan_id',
                                     id_material='$id_material',
+                                    kuantitas='$kuantitas'
                     WHERE id='$id'";
             $sukses_text[] = 'Berhasil menyimpan data penggunaan material';
         } else {
             $wkt_dibuat = date('Y-m-d H:i:s');
             $dibuat_oleh = $_SESSION['pengguna_id'];
-            $sql = "INSERT INTO pengguna_material (jenis_id, no_id, nm_pengguna, no_telp_pengguna, email_pengguna, perusahaan_id, id_material, tgl_dibuat, dibuat_oleh)
-            VALUES ('$jenis_id', '$no_id', '$nm_pengguna', '$no_telp_pengguna', '$email_pengguna', '$perusahaan_id', '$id_material', '$wkt_dibuat', '$dibuat_oleh')";
+            $sql = "INSERT INTO pengguna_material (jenis_id, no_id, nm_pengguna, no_telp_pengguna, email_pengguna, perusahaan_id, id_material, kuantitas, tgl_dibuat, dibuat_oleh)
+            VALUES ('$jenis_id', '$no_id', '$nm_pengguna', '$no_telp_pengguna', '$email_pengguna', '$perusahaan_id', '$id_material', '$kuantitas', '$wkt_dibuat', '$dibuat_oleh')";
             $sukses_text[] = 'Berhasil menambah data penggunaan material';
         }
 
@@ -397,9 +424,19 @@ if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_materi
                     'email_pengguna'   => $email_pengguna,
                     'perusahaan_id'    => $perusahaan_id,
                     'id_material'      => $id_material,
+                    'kuantitas'        => $kuantitas,
                 ]),
             ]);
+
+            // kurangi kuantitas
+            if (! $is_edit) {
+                $connectdb->query("UPDATE material SET kuantitas = kuantitas - $kuantitas WHERE id='$id_material'");
+            }
+
+            // message
             $_SESSION['success_text'] = $sukses_text;
+
+            // redirection
             header('Location:'.$config['base_url'].'/admin?lihat=data_penggunaan_material');
             exit();
         } else {

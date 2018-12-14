@@ -42,6 +42,10 @@ if (isset($_POST)) {
                 <label for="nm_material">Nama Material</label>
                 <input type="text" name="nm_material" class="form-control" id="nm_material" placeholder="Masukan Nama Material" value="<?php echo $data['nm_material']; ?>">
               </div>
+              <div class="form-group">
+                <label for="kuantitas">Kuantitas</label>
+                <input type="number" name="kuantitas" class="form-control" id="kuantitas" placeholder="Masukan Kuantitas" value="<?php echo $data['kuantitas']; ?>">
+              </div>
             </div>
             <!-- /.box-body -->
 

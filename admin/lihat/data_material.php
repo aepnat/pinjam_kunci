@@ -44,12 +44,14 @@ $results = $Paginator->getData($limit, $page);
           <tr>
             <th>Kode Material</th>
             <th>Nama Material</th>
+            <th>Kuantitas</th>
             <th>Aksi</th>
           </tr>
           <?php if (!empty($results->data)): foreach ($results->data as $data):?>
               <tr>
                 <td><?php echo $data['kode_material']; ?></td>
                 <td><?php echo $data['nm_material']; ?></td>
+                <td><?php echo $data['kuantitas']; ?></td>
                 <td>
                     <a class="btn btn-xs btn-success" href="<?php echo $config['base_url']; ?>/admin?lihat=data_material&metode=edit&id=<?php echo $data['id']; ?>">Ubah</a>
                     <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url']; ?>/admin?lihat=data_material&metode=hapus&id=<?php echo $data['id']; ?>" onclick="return confirm('Apakah anda yakin menghapus data ini?');">Hapus</a>
