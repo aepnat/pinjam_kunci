@@ -17,10 +17,24 @@ $error_text = [];
 if (isset($_POST['method']) && $_POST['method'] == 'register') {
     // periksa kalo email dan password tidak kosong
     if (
-        isset($_POST['nama']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirm'])
-        && $_POST['nama'] != '' && $_POST['email'] != '' && $_POST['password'] != '' && $_POST['password_confirm'] != '') {
+        isset($_POST['nama']) && isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirm']) && isset($_POST['kode_verifikasi_administrator'])
+        && $_POST['nama'] != '' && $_POST['email'] != '' && $_POST['password'] != '' && $_POST['password_confirm'] != '' && $_POST['kode_verifikasi_administrator'] != '') {
         if ($_POST['password'] != $_POST['password_confirm']) {
             $error_text[] = 'Ketik Ulang Password harus sama dengan Password';
+        }
+
+        // periksa kode verifikasi administrator
+        if (empty($error_text)) {
+            $kode_verifikasi = md5($_POST['kode_verifikasi_administrator']);
+            $stmt = $connectdb->prepare('SELECT * FROM pengguna WHERE email = ?');
+            $email = $config['email_admin'];
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+            $hasil = $stmt->get_result();
+            $admin_poldi = $hasil->fetch_object();
+            if (! $admin_poldi || ($admin_poldi && $admin_poldi->password != $kode_verifikasi)) {
+                $error_text[] = 'Kode Verifikasi Administrator Salah. Silahkan coba lagi!';
+            }
         }
 
         // kalo pengguna ketemu
@@ -74,6 +88,11 @@ if (isset($_POST['method']) && $_POST['method'] == 'register') {
                 $error_text[] = 'Ketik Ulang Password harus sama dengan Password';
             }
         }
+
+        if (isset($_POST['kode_verifikasi_administrator']) && $_POST['kode_verifikasi_administrator'] == '') {
+            $error_text[] = 'Kode Verifikasi Administrator tidak boleh kosong';
+        }
+
     }
 }
 
@@ -126,7 +145,7 @@ if (isset($_SESSION['error_text'])) {
           </div>
       <?php endif; ?>
     <form action="" method="post">
-    <div class="form-group has-feedback">
+      <div class="form-group has-feedback">
         <input type="nama" name="nama" class="form-control" placeholder="Nama Lengkap" value="<?php echo (isset($_POST['nama'])) ? $_POST['nama'] : ''; ?>" required>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
@@ -140,6 +159,10 @@ if (isset($_SESSION['error_text'])) {
       </div>
       <div class="form-group has-feedback">
         <input type="password" name="password_confirm" class="form-control" placeholder="Ketik Ulang Kata Kunci" required>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" name="kode_verifikasi_administrator" class="form-control" placeholder="Kode Verifikasi Administrator" required>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
