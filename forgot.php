@@ -16,9 +16,24 @@ $error_text = [];
 // periksa kalo ada request untuk forgot
 if (isset($_POST['method']) && $_POST['method'] == 'forgot') {
     // periksa kalo email dan password tidak kosong
-    if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirm']) && $_POST['email'] != '' && $_POST['password'] != '' && $_POST['password_confirm'] != '') {
+    if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['password_confirm']) && isset($_POST['kode_verifikasi_administrator'])
+    && $_POST['email'] != '' && $_POST['password'] != '' && $_POST['password_confirm'] != '' && $_POST['kode_verifikasi_administrator'] != '') {
         if ($_POST['password'] != $_POST['password_confirm']) {
             $error_text[] = 'Ketik Ulang Password harus sama dengan Password';
+        }
+
+        // periksa kode verifikasi administrator
+        if (empty($error_text)) {
+            $kode_verifikasi = md5($_POST['kode_verifikasi_administrator']);
+            $stmt = $connectdb->prepare('SELECT * FROM pengguna WHERE email = ?');
+            $email = $config['email_admin'];
+            $stmt->bind_param('s', $email);
+            $stmt->execute();
+            $hasil = $stmt->get_result();
+            $admin_poldi = $hasil->fetch_object();
+            if (! $admin_poldi || ($admin_poldi && $admin_poldi->password != $kode_verifikasi)) {
+                $error_text[] = 'Kode Verifikasi Administrator Salah. Silahkan coba lagi!';
+            }
         }
 
         if (empty($error_text)) {
@@ -135,6 +150,10 @@ if (isset($_SESSION['error_text'])) {
       </div>
       <div class="form-group has-feedback">
         <input type="password" name="password_confirm" class="form-control" placeholder="Ketik Ulang Kata Kunci Baru" required>
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" name="kode_verifikasi_administrator" class="form-control" placeholder="Kode Verifikasi Administrator" required>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
