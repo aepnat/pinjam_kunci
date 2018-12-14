@@ -7,6 +7,7 @@ $data = [
     'id_material'      => '',
     'jenis_id'         => '',
     'no_id'            => '',
+    'kuantitas'        => '',
     'nm_pengguna'      => '',
     'no_telp_pengguna' => '',
     'email_pengguna'   => '',
@@ -66,14 +67,28 @@ $data_material = $connectdb->query($sql);
                 <select name="id_material" class="form-control">
                   <option value="">Pilih Material</option>
                   <?php if ($data_material->num_rows > 0): while ($material = $data_material->fetch_assoc()):?>
-                      <option value="<?php echo $material['id']; ?>" <?php echo ($data['id_material'] == $material['id']) ? 'selected="selected"' : ''; ?>><?php printf('%s - %s', $material['kode_material'], $material['nm_material']); ?></option>
+                    <?php
+                      $extraAttribute = array();
+                      $extraAttribute[] = ($data['id_material'] == $material['id']) ? 'selected="selected"' : '';
+                      $extraAttribute[] = ($material['kuantitas'] < 1) ? 'disabled="disabled"' : '';
+                      $text = sprintf('%s - %s (Kuantitas: %s)', $material['kode_material'], $material['nm_material'], $material['kuantitas']);
+                    ?>
+                    <option value="<?php echo $material['id']; ?>" <?php echo implode(' ', $extraAttribute);?>><?php echo $text; ?></option>
                   <?php endwhile; endif; ?>
                 </select>
                 <br>
                 <div class="callout callout-info">
-                    <p>Jika data material tidak ada. Silahkan tambah data material di menu Registrasi Material atau klik <a href="<?php $config['base_url']; ?>/admin?lihat=registrasi_material">[link ini]</a></p>
+                    <p>
+                      - Material dengan kuantitas nol tidak bisa dipilih. Silahkan atur kuantitas material pada menu data material.<br />
+                      - Jika data material tidak ada. Silahkan tambah data material di menu Registrasi Material atau klik <a href="<?php $config['base_url']; ?>/admin?lihat=registrasi_material">[link ini]</a>
+                    </p>
                 </div>
               </div>
+              <div class="row form-group col-md-2 col-xs-12">
+                <label for="kuantitas">Kuantitas Material</label>
+                <input type="number" name="kuantitas" class="form-control" id="kuantitas" placeholder="0" value="<?php echo $data['kuantitas']; ?>">
+              </div>
+              <div class="clearfix"></div>
               <div class="form-group">
                 <label>Jenis ID</label>
                 <select name="jenis_id" class="form-control">
@@ -84,7 +99,7 @@ $data_material = $connectdb->query($sql);
               </div>
               <div class="form-group">
                 <label for="no_id">Nomor ID Pengguna</label>
-                <input type="text" name="no_id" class="form-control" id="no_id" placeholder="Masukan Nomor ID Pengguna" value="<?php echo $data['no_id']; ?>">
+                <input type="number" name="no_id" class="form-control" id="no_id" placeholder="Masukan Nomor ID Pengguna" value="<?php echo $data['no_id']; ?>">
               </div>
               <div class="form-group">
                 <label for="nm_pengguna">Nama Pengguna</label>
@@ -92,11 +107,11 @@ $data_material = $connectdb->query($sql);
               </div>
               <div class="form-group">
                 <label for="no_telp_pengguna">No. Telp Pengguna</label>
-                <input type="text" name="no_telp_pengguna" class="form-control" id="no_telp_pengguna" placeholder="Masukan No. Telp Pengguna" value="<?php echo $data['no_telp_pengguna']; ?>">
+                <input type="number" name="no_telp_pengguna" class="form-control" id="no_telp_pengguna" placeholder="Masukan No. Telp Pengguna" value="<?php echo $data['no_telp_pengguna']; ?>">
               </div>
               <div class="form-group">
                 <label for="email_pengguna">Email Pengguna</label>
-                <input type="text" name="email_pengguna" class="form-control" id="email_pengguna" placeholder="Masukan Email Pengguna" value="<?php echo $data['email_pengguna']; ?>">
+                <input type="email" name="email_pengguna" class="form-control" id="email_pengguna" placeholder="Masukan Email Pengguna" value="<?php echo $data['email_pengguna']; ?>">
               </div>
             </div>
             <!-- /.box-body -->

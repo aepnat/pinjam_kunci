@@ -1,9 +1,24 @@
 <?php
 global $id;
 
-$sql = "SELECT pengguna_material.*, perusahaan.nama as nm_perusahaan, perusahaan.no_telp as no_telp_perusahaan FROM pengguna_material JOIN perusahaan ON perusahaan.perusahaan_id=pengguna_material.perusahaan_id WHERE id = $id";
+$sql = "SELECT pengguna_material.*, perusahaan.nama as nm_perusahaan, perusahaan.no_telp as no_telp_perusahaan, material.nm_material, material.kode_material  
+        FROM pengguna_material 
+        JOIN perusahaan ON perusahaan.perusahaan_id=pengguna_material.perusahaan_id 
+        JOIN material ON material.id=pengguna_material.id_material
+        WHERE pengguna_material.id = $id";
 $hasil = $connectdb->query($sql);
-$data = $hasil->fetch_assoc();
+$data = ($hasil) ? $hasil->fetch_assoc() : array();
+
+if (empty($data)) {
+  // message
+  $_SESSION['error_text'][] = 'Data penggunaan material tidak ditemukkan';
+  ?>
+  <script type="text/javascript">
+    window.history.go(-1);
+  </script>
+  <?php
+  exit();  
+}
 ?>
 <div class="row">
     <div class="col-md-12">
