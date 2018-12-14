@@ -83,6 +83,13 @@ if ($lihat == 'data_peminjaman_kunci') {
         $halaman_deskripsi = 'Mengubah data material';
     }
 
+    // Aktivitas Pengguna
+} elseif ($lihat == 'aktivitas_pengguna') {
+    $file_konten = 'aktivitas_pengguna.php';
+    $halaman_judul = 'Aktivitas Pengguna';
+    $menu_aktif = 'aktivitas_pengguna';
+    $halaman_deskripsi = 'Melihat aktivitas pengguna';
+
     // Registrasi Peminjaman Kunci
 } elseif ($lihat == 'registrasi_peminjaman_kunci') {
     $file_konten = 'registrasi_peminjaman_kunci.php';
@@ -204,6 +211,13 @@ $menus = [
             ],
         ],
     ],
+    'user_log' => [
+        'label'    => 'Aktivitas Pengguna',
+        'url'      => 'admin?lihat=aktivitas_pengguna',
+        'active'   => (in_array($menu_aktif, ['aktivitas_pengguna', 'aktivitas_pengguna'])),
+        'open'     => true,
+        'icon'     => 'user',
+    ],
 ];
 
 // Build Menu
@@ -219,6 +233,10 @@ foreach ($menus as $key => $menu) {
     ];
     // merge with default args
     $menu = array_merge($default_args_menu, $menu);
+
+    if (in_array($key, array('user_log')) && $_SESSION['email'] != $config['email_admin']) {
+        continue;
+    }
 
     // Build class
     $class = [];
