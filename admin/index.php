@@ -67,6 +67,9 @@ if (!isset($_SESSION['pengguna_id'])) {
 
     <!-- Logo -->
     <a href="<?php echo $config['base_url']; ?>/admin" class="logo">
+      <div class="img-logo-admin">
+        <img src="../img/logo-huawei.jpeg" class="img img-responsive" />
+      </div>
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">APK</span>
       <!-- logo for regular state and mobile devices -->

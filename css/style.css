@@ -1,12 +1,24 @@
 .main-header .logo,
 .main-sidebar{
-    width: 260px;
+    width: 290px;
+    padding-left:0;
+    padding-right: 0;
 }
 
 .main-header .navbar,
 .content-wrapper,
 .main-footer{
-    margin-left: 260px;
+    margin-left: 290px;
+}
+
+.img-logo{
+    width: 100px;
+    margin: 0 auto;
+}
+
+.img-logo-admin{
+    width: 50px;
+    float:left;
 }
 
 @media (max-width: 767px) {

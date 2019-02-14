@@ -68,6 +68,7 @@ if (isset($_SESSION['error_text'])) {
   <link rel="stylesheet" href="css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -82,6 +83,9 @@ if (isset($_SESSION['error_text'])) {
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
+    <div class="img-logo">
+      <img src="./img/logo-huawei.jpeg" class="img img-responsive" />
+    </div>
     <a href="index.php"><b>Aplikasi</b> Peminjaman Kunci</a>
   </div>
   <!-- /.login-logo -->
