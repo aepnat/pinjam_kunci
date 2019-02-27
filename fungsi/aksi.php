@@ -451,6 +451,135 @@ if ($metode == 'input_penggunaan_material' || ($lihat == 'data_penggunaan_materi
 }
 
 /*
+ * Download Data Peminjaman Kunci
+ * ============================================================================
+ */
+if ($lihat == 'data_penggunaan_material' && $metode == 'download') {
+    global $id;
+
+    $sql = "SELECT pengguna_material.*, perusahaan.nama as nm_perusahaan, perusahaan.no_telp as no_telp_perusahaan, material.nm_material, material.kode_material  
+            FROM pengguna_material 
+            JOIN perusahaan ON perusahaan.perusahaan_id=pengguna_material.perusahaan_id 
+            JOIN material ON material.id=pengguna_material.id_material
+            WHERE pengguna_material.id = $id";
+    $hasil = $connectdb->query($sql);
+    $data = ($hasil) ? $hasil->fetch_assoc() : array();
+    
+    if (empty($data)) {
+      // message
+      $_SESSION['error_text'][] = 'Data penggunaan material tidak ditemukkan';
+      ?>
+      <script type="text/javascript">
+        window.history.go(-1);
+      </script>
+      <?php
+      exit();  
+    }
+    
+    require_once("tcpdf/tcpdf.php");
+// echo K_PATH_IMAGES;exit();
+    // create new PDF document
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+    // set document information
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Aplikasi Peminjaman Kunci');
+    $pdf->SetTitle('Data Pengguna Material - PT.Huawei Indonesia');
+    $pdf->SetSubject('Aplikasi Peminjaman Kunci');
+    $pdf->SetKeywords('penggunaan material, peminjaman material');
+
+    // set default header data
+    $logo = 'logo-huawei.png';
+    $pdf->SetHeaderData($logo, PDF_HEADER_LOGO_WIDTH, 'Data Penggunaan Material', 'Aplikasi Peminjaman Kunci');
+    // $pdf->setFooterData(array(0,0,0), array(0,0,0));
+
+    // set header and footer fonts
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+    // set default monospaced font
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+    // set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    // $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+    // set auto page breaks
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+    // set image scale factor
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+    // set some language-dependent strings (optional)
+    if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        require_once(dirname(__FILE__).'/lang/eng.php');
+        $pdf->setLanguageArray($l);
+    }
+
+    // ---------------------------------------------------------
+
+    // set default font subsetting mode
+    $pdf->setFontSubsetting(true);
+
+    // Set font
+    // dejavusans is a UTF-8 Unicode font, if you only need to
+    // print standard ASCII chars, you can use core fonts like
+    // helvetica or times to reduce file size.
+    $pdf->SetFont('helvetica', '', 12, '', true);
+
+    // Add a page
+    // This method has several options, check the source code documentation for more information.
+    $pdf->AddPage();
+
+    // set text shadow effect
+    // $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+
+// Set some content to print
+foreach ($data as $k => $v) {
+    if ($data[$k] == '') {
+        $data[$k] = '-';
+    }
+}
+
+$data['jenis_id'] = strtoupper($data['jenis_id']);
+$html = <<<EOD
+<p><strong>Perusahaan</strong><br>
+{$data['nm_perusahaan']}</p>
+
+<p><strong>Nama Material</strong><br>
+{$data['nm_material']}</p>
+
+<p><strong>Kode Material</strong><br>
+{$data['kode_material']}</p>
+
+<p><strong>Jenis ID</strong><br>
+{$data['jenis_id']}</p>
+
+<p><strong>Nomor ID Pengguna</strong><br>
+{$data['no_id']}</p>
+
+<p><strong>Nama Pengguna</strong><br>
+{$data['nm_pengguna']}</p>
+
+<p><strong>No. Telp Pengguna</strong><br>
+{$data['no_telp_pengguna']}</p>
+
+<p><strong>Email Pengguna</strong><br>
+{$data['email_pengguna']}</p>
+EOD;
+
+    // Print text using writeHTMLCell()
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+    // ---------------------------------------------------------
+
+    // Close and output PDF document
+    // This method has several options, check the source code documentation for more information.
+    $pdf->Output('Data penggunaan material ' . $data['nm_perusahaan'] . '.pdf', 'D');
+}
+
+/*
  * Selesai Data Peminjaman Kunci
  * ============================================================================
  */

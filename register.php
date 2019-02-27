@@ -138,7 +138,7 @@ if (isset($_SESSION['error_text'])) {
     <div class="img-logo">
       <img src="./img/logo-huawei.jpeg" class="img img-responsive" />
     </div>
-    <a href="index.php"><b>Aplikasi</b> Peminjaman Kunci</a>
+    <a href="index.php"><b>Aplikasi Peminjaman Kunci</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
