@@ -249,6 +249,7 @@ $total_jenis_pekerjaan_troubleshoot = $hasil->num_rows;
                             <a class="btn btn-xs btn-warning" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=selesai&id=<?php echo $data['id']; ?>" onclick="return confirm('Apakah anda yakin menyelesaikan data ini?');">Selesai</a>
                         <?php endif; ?>
                         <a class="btn btn-xs btn-primary" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=detail&id=<?php echo $data['id']; ?>">Detail</a>
+                        <a class="btn btn-xs btn-warning" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=download&id=<?php echo $data['id']; ?>">Download</a>
                         <a class="btn btn-xs btn-success" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=edit&id=<?php echo $data['id']; ?>">Ubah</a>
                         <a class="btn btn-xs btn-danger" href="<?php echo $config['base_url']; ?>/admin?lihat=data_peminjaman_kunci&metode=hapus&id=<?php echo $data['id']; ?>" onclick="return confirm('Apakah anda yakin menghapus data ini?');">Hapus</a>
                     <?php else:?>
