@@ -134,12 +134,6 @@ if (isset($_SESSION['error_text'])) {
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
-  <div class="login-logo">
-    <div class="img-logo">
-      <img src="./img/logo-huawei.jpeg" class="img img-responsive" />
-    </div>
-    <a href="index.php"><b>Aplikasi Peminjaman Kunci</b></a>
-  </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
       <p class="login-box-msg">Isi kolom dibawah untuk mendaftar.</p>

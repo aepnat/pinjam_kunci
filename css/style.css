@@ -1,3 +1,7 @@
+body {
+    background: #222d32;
+}
+
 .main-header .logo,
 .main-sidebar{
     width: 290px;
