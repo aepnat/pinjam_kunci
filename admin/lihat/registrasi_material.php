@@ -24,7 +24,7 @@ if (isset($_POST)) {
 }
 ?>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-lg-6 col-md-8 col-xs-12">
         <!-- general form elements -->
         <div class="box box-primary">
           <div class="box-header with-border">
