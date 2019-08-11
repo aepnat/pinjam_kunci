@@ -1,7 +1,7 @@
 <?php
 require_once '../fungsi/paginator.class.php';
 
-$sql = 'SELECT * FROM material';
+$sql = 'SELECT id,kode_material,nm_material,kuantitas FROM material';
 
 if (isset($_POST['metode']) && $_POST['metode'] == 'cari') {
     $q = $_POST['q'];

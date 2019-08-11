@@ -61,7 +61,7 @@ if (!isset($_SESSION['pengguna_id'])) {
   <!-- AdminLTE App -->
   <script src="../js/adminlte.min.js"></script>
 </head>
-<body class="skin-blue">
+<body class="skin-blue <?php echo $halaman_judul == '' ? 'home' : '';?> <?php echo $hide_menu ? 'hide-menu' : '';?>">
   <!-- Main Header -->
   <header class="main-header">
 
@@ -70,15 +70,11 @@ if (!isset($_SESSION['pengguna_id'])) {
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">APK</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg">Aplikasi Peminjaman Kunci</span>
+      <span class="logo-lg"><i class="fa fa-home"></i> Halaman Menu</span>
     </a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-        <span class="sr-only">Toggle navigation</span>
-      </a>
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">

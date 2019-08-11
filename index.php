@@ -68,7 +68,7 @@ if (isset($_SESSION['error_text'])) {
   <link rel="stylesheet" href="css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="css/AdminLTE.min.css">
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

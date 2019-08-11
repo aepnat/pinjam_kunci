@@ -2,6 +2,14 @@ body {
     background: #222d32;
 }
 
+body.login-page{
+    background: #ffffff;
+}
+
+.login-box, .register-box{
+    width: 800px;
+}
+
 .main-header .logo,
 .main-sidebar{
     width: 290px;
@@ -23,6 +31,30 @@ body {
 .img-logo-admin{
     width: 50px;
     float:left;
+}
+
+body.home .content-wrapper{
+    background:#222d32;
+}
+
+body.hide-menu .content-header{
+    display:none;
+}
+body.hide-menu .main-sidebar {
+    display:none;
+}
+body.hide-menu .content-wrapper{
+    margin-left:0;
+}
+body.hide-menu .main-footer{
+    margin-left:0;
+}
+.sidebar-menu>li>a{
+    font-size:120%;
+    color:#fff;
+}
+.skin-blue .sidebar-menu .treeview-menu>li>a{
+    color:#fff;
 }
 
 @media (max-width: 767px) {

@@ -2,10 +2,10 @@
 
 require_once '../config/config.php';
 
-$file_konten = 'home.php';
-$halaman_judul = 'Home';
-$menu_aktif = 'home';
-$halaman_deskripsi = 'Selamat Datang';
+$file_konten = 'index.php';
+$halaman_judul = '';
+$menu_aktif = '';
+$halaman_deskripsi = '';
 
 global $lihat;
 $lihat = (isset($_GET['lihat'])) ? $_GET['lihat'] : '';
@@ -19,8 +19,15 @@ global $id;
 $id = (isset($_GET['id'])) ? $_GET['id'] : '';
 $id = (isset($_POST['id']) && $id == '') ? $_POST['id'] : $id;
 
+$hide_menu = true;
+
 // Data Peminjaman Kunci
-if ($lihat == 'data_peminjaman_kunci') {
+if ($lihat == 'home') {
+    $file_konten = 'home.php';
+    $halaman_judul = 'Home';
+    $menu_aktif = 'home';
+    $halaman_deskripsi = 'Selamat Datang';
+}elseif ($lihat == 'data_peminjaman_kunci') {
     $file_konten = 'data_peminjaman_kunci.php';
     $halaman_judul = 'Data Peminjaman Kunci';
     $menu_aktif = 'data_peminjaman_kunci';
@@ -123,7 +130,7 @@ $file_konten = 'lihat/'.$file_konten;
 $menus = [
     'home' => [
         'label'  => 'Home',
-        'url'    => 'admin',
+        'url'    => 'admin?lihat=home',
         'active' => ($menu_aktif == 'home'),
         'icon'   => 'dashboard',
     ],
